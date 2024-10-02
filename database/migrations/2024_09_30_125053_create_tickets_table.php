@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('title');
+            $table->text('title');
             $table->string('content');
             $table->string('status')->default('in progress');
             $table->foreignId('category_id');
