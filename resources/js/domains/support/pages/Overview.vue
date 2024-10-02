@@ -1,6 +1,6 @@
 <script setup lang="ts">
 //Imports
-import { isLoggedIn } from '../../services/auth';
+import { isLoggedIn } from '../../../services/auth';
 
 
 

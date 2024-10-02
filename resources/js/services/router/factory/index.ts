@@ -1,5 +1,5 @@
 import type {Meta} from '../types';
-import type {RouteComponent} from 'vue-router';
+import type {RouteComponent, RouteRecordRaw} from 'vue-router';
 
 import {getPluralTranslation, getSingularTranslation} from '../../translation';
 

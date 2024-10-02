@@ -1,7 +1,6 @@
 import type {Translation} from './types';
 
 
-
 const PLURAL = 'plural';
 const SINGULAR = 'singular';
 

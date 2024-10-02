@@ -2,7 +2,7 @@ import type {Toast} from './types';
 
 import {createApp, h, ref} from 'vue';
 
-import {registerResponseErrorMiddleware, registerResponseMiddleware} from 'services/http';
+import {registerResponseErrorMiddleware, registerResponseMiddleware} from '../http';
 
 import ToastComponent from './Toast.vue';
 

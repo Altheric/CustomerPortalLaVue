@@ -9,7 +9,7 @@ import type {
 import type {Component} from 'vue';
 import type {NavigationGuard} from 'vue-router';
 
-import {USER_DOMAIN_NAME} from '../domains/user';
+import { USER_DOMAIN_NAME } from 'domains/user';
 import {computed, ref} from 'vue';
 
 import {getRequest, postRequest, registerResponseErrorMiddleware} from '../http';

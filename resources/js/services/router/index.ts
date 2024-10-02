@@ -7,15 +7,13 @@ import type {
     RouteRecordRaw,
 } from 'vue-router';
 
-import {createRouter, createWebHistory, RouteLocationAsRelativeGeneric} from 'vue-router';
+import {createRouter, createWebHistory} from 'vue-router';
 
 import {CREATE_PAGE_NAME, EDIT_PAGE_NAME, OVERVIEW_PAGE_NAME, SHOW_PAGE_NAME} from './factory';
 
-import { siteRoutes } from './routes';
-
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
-    routes: siteRoutes,
+    routes: [],
 });
 
 export const addRoutes = (routes: RouteRecordRaw[]) => {
