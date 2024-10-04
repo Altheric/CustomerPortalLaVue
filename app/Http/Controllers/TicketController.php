@@ -13,7 +13,8 @@ class TicketController extends Controller
      */
     public function index()
     {
-        //
+        $tickets = Ticket::with('user')->get();
+        return response()->json($tickets);
     }
 
     /**

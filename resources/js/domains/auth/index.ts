@@ -46,7 +46,7 @@ export const login = async (credentials: Credentials): Promise<number> => {
     const {data} = await postRequest('login', credentials)
     
     loggedInUser.value = data.user;
-    console.log(data.status)
+
     return data.status;
 };
 
@@ -58,7 +58,6 @@ export const logout = async () => {
 
 export const checkIfLoggedIn = async () => {
     const {data} = await getRequest('current-user')
-    console.log(data);
     loggedInUser.value = data.user;
 };
 
