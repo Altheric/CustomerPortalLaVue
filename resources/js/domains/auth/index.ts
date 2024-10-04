@@ -53,6 +53,7 @@ export const login = async (credentials: Credentials): Promise<number> => {
 export const logout = async () => {
     await getRequest('logout');
     loggedInUser.value = null;
+    goToLoginPage();
 };
 
 export const checkIfLoggedIn = async () => {

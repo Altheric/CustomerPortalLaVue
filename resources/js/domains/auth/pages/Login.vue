@@ -1,20 +1,23 @@
 <script setup lang="ts">
 //Imports
-import { isLoggedIn } from '..';
 import type { Credentials } from '../types';
 import LoginForm from '../components/LoginForm.vue';
-import { login, logout } from '..';
+import { login } from '..';
 import { ref } from 'vue';
+import { goToOverviewPage } from 'services/router';
+import { SUPPORT_DOMAIN_NAME } from 'domains/support';
 
 //Refs
 const invalid = ref<boolean>(false)
 
 
 //Functions
-async function loginValidator(credentials: Credentials){
+async function loginHandler(credentials: Credentials){
     const status = await login(credentials)
     if(status == 406){
         invalid.value = true;
+    } else if(status == 200) {
+        goToOverviewPage(SUPPORT_DOMAIN_NAME)
     }
 }
 </script>
@@ -22,8 +25,6 @@ async function loginValidator(credentials: Credentials){
 
 
 <template>
-    <h1 v-if="isLoggedIn">Logged in!</h1>
-    <button @click="logout()" v-if="isLoggedIn">Uitloggen</button>
-    <LoginForm @submit="(loginCreds) => loginValidator(loginCreds)" v-else/>
+    <LoginForm @submit="(loginCreds) => loginHandler(loginCreds)"/>
     <p v-if="invalid" style="color:red;">Onjuiste email of wachtwoord</p>
 </template>

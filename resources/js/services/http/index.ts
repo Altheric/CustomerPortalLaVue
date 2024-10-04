@@ -76,7 +76,7 @@ export const deleteRequest = (endpoint: string) => http.delete(endpoint);
 /**
  * send a csrf-cookie request to the sanctum api
  */
-export const csrfRequest = () => sanctum.get('csrf-cookie')
+export const csrfRequest = () => sanctum.get('csrf-cookie');
 
 export const registerRequestMiddleware = (middlewareFunc: RequestMiddleware) => requestMiddleware.push(middlewareFunc);
 export const registerResponseMiddleware = (middlewareFunc: ResponseMiddleware) =>
