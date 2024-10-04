@@ -3,10 +3,11 @@ import type {AxiosRequestConfig} from 'axios';
 
 import axios from 'axios';
 
-const baseURL = '/api';
+const apiURL = '/api';
+const sanctumURL = '/sanctum';
 
 const http = axios.create({
-    baseURL,
+    baseURL: apiURL,
     withCredentials: false,
     headers: {
         // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -16,6 +17,16 @@ const http = axios.create({
     },
 });
 
+const sanctum = axios.create({
+    baseURL: sanctumURL,
+    withCredentials: false,
+    headers: {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        Accept: 'application/json',
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        'Content-Type': 'application/json',
+    },
+})
 const requestMiddleware: RequestMiddleware[] = [];
 const responseMiddleware: ResponseMiddleware[] = [];
 const responseErrorMiddleware: ResponseErrorMiddleware[] = [];
@@ -61,6 +72,11 @@ export const putRequest = (endpoint: string, data: unknown) => http.put(endpoint
  * send a delete request to the given endpoint
  */
 export const deleteRequest = (endpoint: string) => http.delete(endpoint);
+
+/**
+ * send a csrf-cookie request to the sanctum api
+ */
+export const csrfRequest = () => sanctum.get('csrf-cookie')
 
 export const registerRequestMiddleware = (middlewareFunc: RequestMiddleware) => requestMiddleware.push(middlewareFunc);
 export const registerResponseMiddleware = (middlewareFunc: ResponseMiddleware) =>

@@ -1,6 +1,7 @@
 //Imports
-//import {authRoutes} from 'domains/auth';
+import type { RouteRecordRaw } from 'vue-router';
+import { authRoutes } from 'domains/auth';
 import { supportRoutes } from '../domains/support/index'
 
-
-export const routes = [...supportRoutes];
+//Routes
+export const routes: any[]= [...authRoutes, ...supportRoutes];
