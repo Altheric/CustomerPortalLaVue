@@ -41,13 +41,13 @@ const loggedInUser = ref<UserResource | null>(null);
 export const isLoggedIn = computed(() => loggedInUser.value !== null);
 export const getLoggedInUser = computed(() => loggedInUser.value);
 
-export const login = async (credentials: Credentials) => {
+export const login = async (credentials: Credentials): Promise<number> => {
     await csrfRequest()
-    const data: any = await postRequest('login', credentials)
-    console.log(data)
-    if (!data) return;
+    const {data} = await postRequest('login', credentials)
     
     loggedInUser.value = data.user;
+    console.log(data.status)
+    return data.status;
 };
 
 export const logout = async () => {

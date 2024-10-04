@@ -32,7 +32,7 @@ class AuthController extends Controller
         if($user != null && Hash::check($validated['password'], $user->password)){
 
             Auth::login($user);
-            
+
             $request->session()->regenerate();
             return new JsonResponse([
                 'user' => $user,
@@ -41,6 +41,7 @@ class AuthController extends Controller
 
         } else {
             return new JsonResponse([
+                'user' => null,
                 'status' => 406
             ]); 
         }

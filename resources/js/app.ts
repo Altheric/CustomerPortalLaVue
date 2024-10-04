@@ -12,6 +12,7 @@ try {
     checkIfLoggedIn();
 } catch (_) {
     // so we dont get stuck in an endless loop of refreshing and checking if logged in
+    // Nope, here be infinite loops if it's async and you reload the page.
 } finally {
     useRouterInApp(app);
     app.mount('#app');

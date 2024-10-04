@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { RouterLink } from 'vue-router';
+import NavView from 'components/NavView.vue';
+import { isLoggedIn } from 'services/auth';
 </script>
 
 <template>
-  <nav>
-  <RouterLink to="/">Home</RouterLink>
-  </nav>
+  <NavView v-if="isLoggedIn"/>
   <main>
     <RouterView />
   </main>

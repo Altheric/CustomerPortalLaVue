@@ -1,6 +1,6 @@
 <script setup lang="ts">
 //Imports
-import { ref, Ref } from 'vue';
+import { ref } from 'vue';
 import type { Credentials } from '../types';
 
 //Emits
@@ -9,15 +9,15 @@ const emit = defineEmits([
 ]);
 
 //Refs
-const loginEmail: Ref<string> = ref('');
-const loginPassword: Ref<string> = ref('');
+const loginEmail = ref<string>('');
+const loginPassword = ref<string>('');
 
 //Functions
 function submit(){
     const loginCreds: Credentials = {
         email: loginEmail.value,
         password: loginPassword.value
-    };
+    }
     emit('submit', loginCreds);
 }
 </script>
