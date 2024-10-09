@@ -1,6 +1,6 @@
 import {Credentials} from './types';
 import { SUPPORT_DOMAIN_NAME } from 'domains/support';
-import {UserResource} from 'domains/user/types';
+import {User} from 'domains/user/types';
 import {computed, ref} from 'vue';
 import {getRequest, postRequest, csrfRequest} from 'services/http';
 import {goToOverviewPage, goToRoute, registerBeforeRouteMiddleware} from 'services/router';
@@ -36,7 +36,7 @@ export const authRoutes = [
     },
 ];
 
-const loggedInUser = ref<UserResource | null>(null);
+const loggedInUser = ref<User | null>(null);
 
 export const isLoggedIn = computed(() => loggedInUser.value !== null);
 export const getLoggedInUser = computed(() => loggedInUser.value);
