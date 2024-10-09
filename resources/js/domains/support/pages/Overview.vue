@@ -14,6 +14,10 @@ supportStore.actions.getAll();
 categoryStore.actions.getAll();
 messageStore.actions.getAll();
 
+//Props
+const props = defineProps<{
+    id: number
+}>();
 //Vars
 let selection: number = 0;
 
