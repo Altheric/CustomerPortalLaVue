@@ -1,27 +1,23 @@
 <script setup lang="ts">
 //Imports
-import { computed } from 'vue';
 import { supportStore } from '..';
+import { categoryStore } from 'domains/category';
+import { computed, ref } from 'vue';
 import type { Ticket } from '../types';
 
 //Props
 const props = defineProps<{
-    id: number
-}>();
+    tickets: Ticket[]
+}>()
 
 //Emits
 const emit = defineEmits([
     'select'
 ]);
-
-//Refs
-const myTickets = computed<Ticket[]>(()=> supportStore.getters.getUserTickets(props.id).value);
-
 </script>
 
-<template>   
-    <p v-if="myTickets.length < 1">U heeft geen tickets.</p>
-    <div v-else v-for="ticket in myTickets">
+<template>
+    <div v-for="ticket in tickets" :key="ticket.id">
         <a href="#" class="overview-link" @click="$emit('select', ticket.id)">{{ ticket.title }}. Status: {{ ticket.status}}</a>
     </div>
 </template>

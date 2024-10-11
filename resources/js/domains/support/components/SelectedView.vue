@@ -1,6 +1,6 @@
 <script setup lang="ts">
 //Imports
-import { computed, ComputedRef } from 'vue';
+import { computed } from 'vue';
 import { supportStore } from '..';
 import { userStore } from 'domains/user';
 import { categoryStore } from 'domains/category';
@@ -23,7 +23,7 @@ const ticket = computed<Ticket>(() => supportStore.getters.byId(props.ticketID).
 
 const selectedAdmin = (id: number) => computed(() => userStore.getters.byId(id).value)
 
-const selectedCategory = computed(() => categoryStore.getters.byId(ticket.value.category_id))
+const selectedCategory = computed(() => categoryStore.getters.byId(ticket.value.category_id).value)
 
 const responses = computed(() => messageStore.getters.getMessagesByTnT(props.ticketID, 'response').value)
 </script>
@@ -32,9 +32,9 @@ const responses = computed(() => messageStore.getters.getMessagesByTnT(props.tic
     <a href="#" @click="$emit('revert')">Terug</a>
     <p>{{ ticket.title }}</p>
     <p>{{ ticket.user!.name }}</p>
-    <p>Gepost op: {{ ticket.created_at }} onder {{ selectedCategory }}</p>
+    <p>Gepost op: {{ ticket.created_at }} onder {{ selectedCategory.category }}</p>
     <p>{{ ticket.content }}</p>
-    <p>In behandeling door: {{ selectedAdmin(ticket.admin_id).value }}</p>
+    <p>In behandeling door: {{ selectedAdmin(ticket.admin_id).value.name }}</p>
     <p>Status: {{ ticket.status }}</p>
     <h2>Reacties</h2>
     <div>

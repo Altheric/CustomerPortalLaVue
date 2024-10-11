@@ -4,6 +4,7 @@ import type { Credentials } from '../types';
 import LoginForm from '../components/LoginForm.vue';
 import { login } from '..';
 import { ref } from 'vue';
+import { RouterLink } from 'vue-router';
 import { goToOverviewPage } from 'services/router';
 import { SUPPORT_DOMAIN_NAME } from 'domains/support';
 
@@ -25,6 +26,7 @@ async function loginHandler(credentials: Credentials){
 
 
 <template>
+    <RouterLink to="/registreren/:token">Maak een account aan</RouterLink>
     <LoginForm @submit="(loginCreds) => loginHandler(loginCreds)"/>
-    <p v-if="invalid" style="color:red;">Onjuiste email of wachtwoord</p>
+    <RouterLink to="/wachtwoord-vergeten" v-if="invalid == true">Wachtwoord vergeten?</RouterLink>
 </template>

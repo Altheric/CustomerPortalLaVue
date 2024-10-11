@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
 
 class AuthController extends Controller
 {
@@ -59,5 +60,11 @@ class AuthController extends Controller
         return new JsonResponse([
             'status' => 200
         ]);
+    }
+    /**
+     * Register the user. 
+     */
+    public function register(RegisterRequest $request){
+        
     }
 }
