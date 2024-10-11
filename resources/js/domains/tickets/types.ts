@@ -1,5 +1,6 @@
 import { Item } from "types/index"
 import { User } from "domains/user/types"
+
 export interface Ticket extends Item {
     title: string
     content: string

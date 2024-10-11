@@ -1,4 +1,4 @@
-import { createOverviewRoute } from 'services/router/factory';
+import { createOverviewRoute, createCreateRoute } from 'services/router/factory';
 import OverviewPage from './pages/Overview.vue';
 import { setTranslation } from 'services/translation';
 import { storeModuleFactory } from 'services/store';
@@ -14,6 +14,7 @@ setTranslation(SUPPORT_DOMAIN_NAME, {
 
 export const supportRoutes = [
     createOverviewRoute(SUPPORT_DOMAIN_NAME, OverviewPage),
+    createCreateRoute(SUPPORT_DOMAIN_NAME, OverviewPage),
 {
     path: '/overzicht/mijn-tickets/:id',
     name: 'Mijn Tickets',

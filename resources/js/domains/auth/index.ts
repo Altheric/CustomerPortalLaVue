@@ -1,5 +1,5 @@
-import {Credentials} from './types';
-import { SUPPORT_DOMAIN_NAME } from 'domains/support';
+import type {Credentials, NewCreds} from './types';
+import { TICKET_DOMAIN_NAME } from 'domains/tickets';
 import {User} from 'domains/user/types';
 import {computed, ref} from 'vue';
 import {getRequest, postRequest, csrfRequest} from 'services/http';
@@ -29,7 +29,7 @@ export const authRoutes = [
         meta: {auth: false, canSeeWhenLoggedIn: false},
     },
     {
-        path: '/registreren/:token',
+        path: '/registreren',
         name: 'register',
         component: Register,
         meta: {auth: false, canSeeWhenLoggedIn: false},
@@ -69,8 +69,15 @@ registerBeforeRouteMiddleware(({meta}) => {
         return true;
     }
     if (isLoggedIn.value && !meta?.canSeeWhenLoggedIn) {
-        goToOverviewPage(SUPPORT_DOMAIN_NAME);
+        goToOverviewPage(TICKET_DOMAIN_NAME);
         return true;
     }
     return false;
 });
+
+export async function register(newUser: NewCreds){
+    await csrfRequest()
+    const {data} = await postRequest('register', newUser)
+
+    return data.status;
+}

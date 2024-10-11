@@ -26,7 +26,7 @@ async function loginHandler(credentials: Credentials){
 
 
 <template>
-    <RouterLink to="/registreren/:token">Maak een account aan</RouterLink>
+    <RouterLink to="/registreren">Maak een account aan</RouterLink>
     <LoginForm @submit="(loginCreds) => loginHandler(loginCreds)"/>
     <RouterLink to="/wachtwoord-vergeten" v-if="invalid == true">Wachtwoord vergeten?</RouterLink>
 </template>

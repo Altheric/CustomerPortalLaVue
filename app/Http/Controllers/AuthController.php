@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -65,6 +67,14 @@ class AuthController extends Controller
      * Register the user. 
      */
     public function register(RegisterRequest $request){
-        
+        $validated = $request->validated();
+        $user = $validated;
+        $user['remember_token'] = Str::random(10);
+        User::create($user);
+        event(new Registered($user));
+        //Todo: Confirm email.
+        return new JsonResponse([
+            'status' => 200
+        ]);
     }
 }
