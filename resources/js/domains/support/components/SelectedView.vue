@@ -1,14 +1,15 @@
 <script setup lang="ts">
 //Imports
 import { computed, ComputedRef } from 'vue';
+import { supportStore } from '..';
 import { userStore } from 'domains/user';
 import { categoryStore } from 'domains/category';
 import { messageStore } from 'domains/messages';
-
+import type { Ticket } from '../types';
 
 //Props
 const props =  defineProps<{
-    ticketProp: ComputedRef
+    ticketID: number
 }>();
 
 
@@ -18,28 +19,28 @@ const emit = defineEmits([
 ]);
 
 //Refs
-const ticket: ComputedRef = computed(() => props.ticketProp.value)
+const ticket = computed<Ticket>(() => supportStore.getters.byId(props.ticketID).value)
 
 const selectedAdmin = (id: number) => computed(() => userStore.getters.byId(id).value)
 
-const selectedCategory = (id: number) => computed(() => categoryStore.getters.byId(id).value)
+const selectedCategory = computed(() => categoryStore.getters.byId(ticket.value.category_id))
 
-const messages = (id: number, type: string) => computed(() => messageStore.getters.getMessagesByTnT(id, type).value)
+const responses = computed(() => messageStore.getters.getMessagesByTnT(props.ticketID, 'response').value)
 </script>
 
 <template>
     <a href="#" @click="$emit('revert')">Terug</a>
     <p>{{ ticket.title }}</p>
-    <p>{{ ticket.user.name }}</p>
-    <p>Gepost op: {{ ticket.created_at }} onder {{ selectedCategory(ticket.category_id).value.category }}</p>
+    <p>{{ ticket.user!.name }}</p>
+    <p>Gepost op: {{ ticket.created_at }} onder {{ selectedCategory }}</p>
     <p>{{ ticket.content }}</p>
-    <p>In behandeling door: {{ selectedAdmin(ticket.admin_id).value.name }}</p>
+    <p>In behandeling door: {{ selectedAdmin(ticket.admin_id).value }}</p>
     <p>Status: {{ ticket.status }}</p>
     <h2>Reacties</h2>
     <div>
-        <div v-for="message in messages(ticket.id, 'response').value">
-            <p>{{ selectedAdmin(message.user_id).value.name }}</p>
-            <p>{{ message.content }}</p>
+        <div v-for="response in responses">
+            <p>{{ selectedAdmin(response.user_id).value.name }}</p>
+            <p>{{ response.content }}</p>
         </div>
     </div>
 </template>
