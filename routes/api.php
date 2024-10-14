@@ -12,6 +12,7 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
     Route::post('register', 'register');
     Route::get('current-user', 'currentUser');
+    Route::post('forgot-password', 'forgotPassword');
     Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('logout', 'logout');
     });

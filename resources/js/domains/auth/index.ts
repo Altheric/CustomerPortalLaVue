@@ -6,7 +6,6 @@ import {getRequest, postRequest, csrfRequest} from 'services/http';
 import {goToOverviewPage, goToRoute, registerBeforeRouteMiddleware} from 'services/router';
 import Login from './pages/Login.vue';
 import Register from './pages/Register.vue';
-import RegisterConfirmed from './pages/RegisterConfirmed.vue';
 import RequestResetPassword from './pages/RequestResetPassword.vue';
 import ResetPassword from './pages/ResetPassword.vue';
 
@@ -79,6 +78,13 @@ registerBeforeRouteMiddleware(({meta}) => {
 export async function register(newUser: NewCreds){
     await csrfRequest()
     const {data} = await postRequest('register', newUser)
+
+    return data.status;
+}
+
+export async function sendResetEmail(email: string){
+    await csrfRequest()
+    const {data} = await postRequest('reset-password', email)
 
     return data.status;
 }

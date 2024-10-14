@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Models\User;
+
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
@@ -10,17 +10,17 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Address;
 
-class ConfirmRegisterMail extends Mailable
+class ResetPasswordMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    protected $user;
+    protected $url;
     /**
      * Create a new message instance.
      */
-    public function __construct(User $user)
+    public function __construct(string $url)
     {
-        $this->user = $user;
+        $this->url = $url;
     }
 
     /**
@@ -30,7 +30,7 @@ class ConfirmRegisterMail extends Mailable
     {
         return new Envelope(
             from: new Address('motjebv@test.com', 'Motje Test'),
-            subject: 'Email bevestigen',
+            subject: 'Wachtwoord Resetten',
         );
     }
 
@@ -40,9 +40,9 @@ class ConfirmRegisterMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.registeruser',
+            view: 'emails.resetpassword',
             with: [
-                'user' => $this->user,
+                'url' => $this->url,
             ],
         );
     }
