@@ -5,18 +5,18 @@ import { storeModuleFactory } from 'services/store';
 import { computed } from 'vue';
 import type { Ticket } from './types';
 
-export const SUPPORT_DOMAIN_NAME = 'support';
+export const TICKET_DOMAIN_NAME = 'tickets';
 
-setTranslation(SUPPORT_DOMAIN_NAME, {
-    singular: 'overzicht',
-    plural: 'overzicht',
+setTranslation(TICKET_DOMAIN_NAME, {
+    singular: 'ticket',
+    plural: 'tickets',
 });
 
-export const supportRoutes = [
-    createOverviewRoute(SUPPORT_DOMAIN_NAME, OverviewPage),
-    createCreateRoute(SUPPORT_DOMAIN_NAME, OverviewPage),
+export const ticketRoutes = [
+    createOverviewRoute(TICKET_DOMAIN_NAME, OverviewPage),
+    createCreateRoute(TICKET_DOMAIN_NAME, OverviewPage),
 {
-    path: '/overzicht/mijn-tickets/:id',
+    path: '/tickets/mijn-tickets/:id',
     name: 'Mijn Tickets',
     params: {
         id: 0
@@ -25,18 +25,18 @@ export const supportRoutes = [
     meta: {auth: true, canSeeWhenLoggedIn: true},
 }];
 
-const baseSupportStore = storeModuleFactory<Ticket>(SUPPORT_DOMAIN_NAME)
+const baseTicketStore = storeModuleFactory<Ticket>(TICKET_DOMAIN_NAME)
 
-export const supportStore = {
-    setters: baseSupportStore.setters,
-    actions:baseSupportStore.actions,
+export const ticketStore = {
+    setters: baseTicketStore.setters,
+    actions:baseTicketStore.actions,
     getters: {
-        ...baseSupportStore.getters,
+        ...baseTicketStore.getters,
         /** Get all tickets with the relevant category_id from the store.*/
-        getTicketsByCategory: (id: number) => computed<Ticket[]>(() => Object.values(baseSupportStore.state.value).filter((ticket) => ticket.category_id == id)),
+        getTicketsByCategory: (id: number) => computed<Ticket[]>(() => Object.values(baseTicketStore.state.value).filter((ticket) => ticket.category_id == id)),
         /** Get all tickets of the userID from the store.*/
-        getUserTickets: (id: number) => computed(() => Object.values(baseSupportStore.state.value).filter((ticket) => ticket.user!.id == id)),
+        getUserTickets: (id: number) => computed(() => Object.values(baseTicketStore.state.value).filter((ticket) => ticket.user!.id == id)),
         /** Get all tickets with the relevant category_id of the user_id from the store.*/
-        getUserTicketsByCategory: (category: number, user: number) => computed<Ticket[]>(() => Object.values(baseSupportStore.state.value).filter((ticket) => ticket.category_id == category && ticket.user_id == user)),
+        getUserTicketsByCategory: (category: number, user: number) => computed<Ticket[]>(() => Object.values(baseTicketStore.state.value).filter((ticket) => ticket.category_id == category && ticket.user_id == user)),
     }
 }

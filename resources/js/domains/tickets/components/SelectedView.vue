@@ -1,7 +1,7 @@
 <script setup lang="ts">
 //Imports
 import { computed } from 'vue';
-import { supportStore } from '..';
+import { ticketStore } from '..';
 import { userStore } from 'domains/user';
 import { categoryStore } from 'domains/category';
 import { messageStore } from 'domains/messages';
@@ -19,7 +19,7 @@ const emit = defineEmits([
 ]);
 
 //Refs
-const ticket = computed<Ticket>(() => supportStore.getters.byId(props.ticketID).value)
+const ticket = computed<Ticket>(() => ticketStore.getters.byId(props.ticketID).value)
 
 const selectedAdmin = (id: number) => computed(() => userStore.getters.byId(id).value)
 

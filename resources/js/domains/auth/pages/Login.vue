@@ -6,7 +6,7 @@ import { login } from '..';
 import { ref } from 'vue';
 import { RouterLink } from 'vue-router';
 import { goToOverviewPage } from 'services/router';
-import { SUPPORT_DOMAIN_NAME } from 'domains/support';
+import { TICKET_DOMAIN_NAME } from 'domains/tickets';
 
 //Refs
 const invalid = ref<boolean>(false)
@@ -18,7 +18,7 @@ async function loginHandler(credentials: Credentials){
     if(status == 406){
         invalid.value = true;
     } else if(status == 200) {
-        goToOverviewPage(SUPPORT_DOMAIN_NAME)
+        goToOverviewPage(TICKET_DOMAIN_NAME)
     }
 }
 </script>

@@ -11,6 +11,8 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ConfirmRegisterMail;
 
 class AuthController extends Controller
 {
@@ -68,11 +70,11 @@ class AuthController extends Controller
      */
     public function register(RegisterRequest $request){
         $validated = $request->validated();
-        $user = $validated;
-        $user['remember_token'] = Str::random(10);
-        User::create($user);
-        event(new Registered($user));
-        //Todo: Confirm email.
+        $validated['remember_token'] = Str::random(10);
+        $user = User::create($validated);
+        
+        Mail::to($user->email)->send(new ConfirmRegisterMail($user));
+
         return new JsonResponse([
             'status' => 200
         ]);

@@ -19,7 +19,7 @@ Route::controller(AuthController::class)->group(function () {
 
 Route::controller(TicketController::class)->group(function () {
     Route::middleware(['auth:sanctum'])->group(function () {
-        Route::get('support', 'index');
+        Route::get('tickets', 'index');
     });
 });
 

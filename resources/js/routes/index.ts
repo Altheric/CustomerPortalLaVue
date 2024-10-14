@@ -1,6 +1,6 @@
 //Imports
 import { authRoutes } from 'domains/auth';
-import { supportRoutes } from '../domains/support/index'
+import { ticketRoutes } from 'domains/tickets';
 
 //Routes
-export const routes: any[]= [...authRoutes, ...supportRoutes];
+export const routes: any[]= [...authRoutes, ...ticketRoutes];

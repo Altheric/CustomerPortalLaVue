@@ -1,7 +1,7 @@
 <script setup lang="ts">
 //Imports
 import { ref, computed } from 'vue';
-import { supportStore } from '..';
+import { ticketStore } from '..';
 import { userStore } from 'domains/user';
 import { categoryStore } from 'domains/category';
 import { messageStore } from 'domains/messages';
@@ -12,7 +12,7 @@ import { getCurrentRouteId } from 'services/router';
 import type { Ticket } from '../types';
 
 userStore.actions.getAll();
-supportStore.actions.getAll();
+ticketStore.actions.getAll();
 categoryStore.actions.getAll();
 messageStore.actions.getAll();
 
@@ -30,13 +30,13 @@ const userID = computed<number | undefined>(() => {
 
 const tickets = (category: number) => computed<Ticket[]>(() => {
     if(category == 0 && userID.value){
-        return supportStore.getters.getUserTickets(userID.value!).value
+        return ticketStore.getters.getUserTickets(userID.value!).value
     } else if (userID.value) {
-        return supportStore.getters.getUserTicketsByCategory(category, userID.value!).value
+        return ticketStore.getters.getUserTicketsByCategory(category, userID.value!).value
     } else if (category > 0 && !userID.value){
-        return supportStore.getters.getTicketsByCategory(category).value
+        return ticketStore.getters.getTicketsByCategory(category).value
     } else {
-        return supportStore.getters.all.value
+        return ticketStore.getters.all.value
     }
 })
 </script>
