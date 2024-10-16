@@ -36,7 +36,7 @@ const responses = computed(() => messageStore.getters.getMessagesByTnT(props.tic
 
 <template>
     <button @click="$emit('revert')">Terug</button>
-    <button v-if="ticket.user_id == user?.id" @click="goToEditPage(TICKET_DOMAIN_NAME, ticket.id)">Bewerken</button>
+    <button v-if="ticket.user_id == user?.id || user?.role == 'admin'" @click="goToEditPage(TICKET_DOMAIN_NAME, ticket.id)">Bewerken</button>
     <p>{{ ticket.title }}</p>
     <p>{{ ticket.user!.name }}</p>
     <p>Gepost op: {{ ticket.created_at }} onder {{ selectedCategory.category }}</p>
@@ -49,5 +49,9 @@ const responses = computed(() => messageStore.getters.getMessagesByTnT(props.tic
             <p>{{ selectedAdmin(response.user_id).value.name }}</p>
             <p>{{ response.content }}</p>
         </div>
+    </div>
+    <div v-if="user?.role == 'admin'">
+        <h2>Plaats een reactie</h2>
+        <!--MESSAGE FORM-->
     </div>
 </template>

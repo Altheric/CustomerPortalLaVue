@@ -12,12 +12,12 @@ const user = computed(() => getLoggedInUser.value);
 <template>
     <nav>
         <RouterLink to="/tickets" style="padding-right:20px;">Overzicht</RouterLink>
-        <div v-if="user!.role == 'user'" style="display: inline-block">
-            <RouterLink :to="'/ticket/' + user!.id"  style="padding-right:20px;">Bekijk Mijn Tickets</RouterLink>
-            <RouterLink to="/ticket/toevoegen" style="padding-right:20px;">Nieuwe Ticket</RouterLink>
-        </div>
         <div v-if="user!.role == 'admin'" style="display: inline-block">
             
+        </div>
+        <div v-else style="display: inline-block">
+            <RouterLink :to="'/ticket/' + user!.id"  style="padding-right:20px;">Bekijk Mijn Tickets</RouterLink>
+            <RouterLink to="/ticket/toevoegen" style="padding-right:20px;">Nieuwe Ticket</RouterLink>
         </div>
         <a href="#" @click="logout()">Uitloggen</a>
     </nav>
