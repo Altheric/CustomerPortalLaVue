@@ -30,7 +30,7 @@ class ConfirmRegisterMail extends Mailable
     {
         return new Envelope(
             from: new Address('motjebv@test.com', 'Motje Test'),
-            subject: 'Email bevestigen',
+            subject: 'Account aangemaakt',
         );
     }
 

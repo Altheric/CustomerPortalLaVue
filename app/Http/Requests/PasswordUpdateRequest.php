@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
 
-class ValidatePasswordRequest extends FormRequest
+class PasswordUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,6 +24,8 @@ class ValidatePasswordRequest extends FormRequest
     {
         return [
             'email' => 'required|min:3|max:60',
+            'token' => 'required|min:19|max:60',
+            'password' => ['required','max:60',Password::min(8)],
         ];
     }
 }

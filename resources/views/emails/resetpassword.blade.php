@@ -9,8 +9,6 @@
 <body>
     <h1>Hallo</h1>
     <p>Klik hier beneden om je wachtwoord te resetten:</p>
-    @component('mail::button',  ['url' => $url])
-        Reset Wachtwoord
-    @endcomponent
+    <a href="{{$url}}">Reset wachtwoord</a>
 </body>
 </html>

@@ -12,6 +12,7 @@ import { getCurrentRouteId } from 'services/router';
 import { getLoggedInUser } from 'domains/auth';
 import type { Ticket } from '../types';
 
+//Stores Setup
 userStore.actions.getAll();
 ticketStore.actions.getAll();
 categoryStore.actions.getAll();

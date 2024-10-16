@@ -13,8 +13,11 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('register', 'register');
     Route::get('current-user', 'currentUser');
     Route::post('forgot-password', 'forgotPassword');
+    Route::put('update-password', 'updatePassword');
+    Route::delete('clear-request', 'clearToken');
     Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('logout', 'logout');
+        
     });
 });
 

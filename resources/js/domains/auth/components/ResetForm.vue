@@ -7,16 +7,21 @@ import type { ResetCreds } from '../types';
 const emit = defineEmits([
     'submit'
 ]);
+//Props
+const props = defineProps<{
+    email: string
+    token: string
+}>()
 
 //Refs
-const resetEmail = ref<string>('');
-const resetToken = ref<string>('');
+const resetPassword = ref<string>('');
 
 //Functions
 function submit(){
     const resetCreds: ResetCreds = {
-        email: resetEmail.value,
-        token: resetToken.value
+        email: props.email,
+        token: props.token,
+        password: resetPassword.value
     }
     emit('submit', resetCreds);
 }
@@ -24,10 +29,8 @@ function submit(){
 
 <template>
     <form @submit.prevent="submit">
-        <label for="form-email">Email:</label>
-        <input type="email" id="form-email" v-model="resetEmail" required min="3" max="60"><br>
-        <label for="form-token">Code:</label>
-        <input type="password" id="form-token" v-model="resetToken" required min="3" max="60"><br>
+        <label for="form-password">Nieuw Wachtwoord:</label>
+        <input type="password" id="form-password" v-model="resetPassword" required min="8" max="60"><br>
         <input type="submit" value="Reset Wachtwoord">
     </form>
 </template>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 //Imports
 import { ref } from 'vue';
-import type { ResetCreds } from '../types';
+
 //Emits
 const emit = defineEmits([
     'submit'
@@ -12,10 +12,10 @@ const resetMail = ref<string>('');
 
 //Functions
 function submit(){
-    const resetCreds: ResetCreds = {
+    const resetRequest: {email: string} = {
         email: resetMail.value
     }
-    emit('submit', resetCreds);
+    emit('submit', resetRequest);
 }
 </script>
 

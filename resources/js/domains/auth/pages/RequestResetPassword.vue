@@ -9,8 +9,10 @@ import ResetRequestForm from '../components/ResetRequestForm.vue';
 const emailSent = ref<boolean>(false);
 //Functions
 async function resetRequestHandler(email: string){
-    const status = sendResetEmail(email);
-
+    const status = await sendResetEmail(email);
+    if(status == 200){
+        emailSent.value = true;
+    }
 
 }
 </script>

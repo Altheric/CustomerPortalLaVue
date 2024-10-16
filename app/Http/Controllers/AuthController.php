@@ -14,7 +14,9 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\ConfirmRegisterMail;
 Use App\Mail\ResetPasswordMail;
 use App\Http\Requests\ValidatePasswordRequest;
-
+use App\Http\Requests\PasswordUpdateRequest;
+use Exception;
+use App\Models\PasswordResetToken;
 
 class AuthController extends Controller
 {
@@ -72,29 +74,62 @@ class AuthController extends Controller
      */
     public function register(RegisterRequest $request){
         $validated = $request->validated();
-        $validated::setRememberToken(Str::random(20));
-        $user = User::create($validated);
-        
-        Mail::to($user->email)->send(new ConfirmRegisterMail($user));
+        try{
+            $user = User::create($validated);
+            Mail::to($user->email)->send(new ConfirmRegisterMail($user));
 
-        return new JsonResponse([
-            'status' => 200
-        ]);
+            return new JsonResponse([
+                'status' => 200
+            ]);
+        } catch(Exception $error) {
+            return new JsonResponse([
+                'status' => $error->getMessage()
+            ]);
+        }
     }
     /**
      * Send an email to reset the email-holder's password.
      */
     public function forgotPassword(ValidatePasswordRequest $request){
         $validated = $request->validated();
+        $resetToken = Str::random(40);
+        $user =  User::where('email', $validated['email'])->get()->first();
+        PasswordResetToken::create([
+            'email' => $validated['email'],
+            'token' => $resetToken
+        ]);
+        $resetURL = "http://127.0.0.1:8000/wachtwoord-vergeten/{$resetToken}/{$validated['email']}";
 
-        $user =  User::where('email', $validated->email)->get()->first();
-
-        $resetURL = $user->email + '+' + Str::random(40);
-
-        Mail::to($user->email)->send(new ResetPasswordMail($resetURL));
+        Mail::to($user['email'])->send(new ResetPasswordMail($resetURL));
 
         return new JsonResponse([
             'status' => 200
         ]);
+    }
+    /**
+     * Update the password if the token and email exists in PasswordResetToken.
+     */
+    public function updatePassword(PasswordUpdateRequest $request){
+        $validated = $request->validated();
+        $passReset = PasswordResetToken::where('email', $validated['email'])->get()->first();
+        if($passReset->token == $validated['token']){
+            $user = User::where('email', $validated['email'])->get()->first();
+            $user->update(['password' => $validated['password']]);
+            return new JsonResponse([
+                'status' => 200
+            ]);
+        } else {
+            return new JsonResponse([
+                'status' => 404
+            ]);
+        }
+    }
+    /**
+     * Remove the PasswordResetRequest from the table after a succesful password update.
+     */
+    public function clearToken(Request $request){
+        $passReset = PasswordResetToken::where('email', $request['email'])->get()->first();
+
+        $passReset->delete();
     }
 }

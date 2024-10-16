@@ -3,8 +3,7 @@ export interface Credentials {
     password: string;
 }
 
-export interface ResetCreds {
-    email: string;
+export interface ResetCreds extends Credentials {
     token?: string;   
 }
 

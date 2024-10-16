@@ -1,8 +1,8 @@
-import type {Credentials, NewCreds} from './types';
+import type {Credentials, NewCreds, ResetCreds} from './types';
 import { TICKET_DOMAIN_NAME } from 'domains/tickets';
 import {User} from 'domains/user/types';
 import {computed, ref} from 'vue';
-import {getRequest, postRequest, csrfRequest} from 'services/http';
+import {getRequest, postRequest, csrfRequest, putRequest, deleteRequest} from 'services/http';
 import {goToOverviewPage, goToRoute, registerBeforeRouteMiddleware} from 'services/router';
 import Login from './pages/Login.vue';
 import Register from './pages/Register.vue';
@@ -84,7 +84,18 @@ export async function register(newUser: NewCreds){
 
 export async function sendResetEmail(email: string){
     await csrfRequest()
-    const {data} = await postRequest('reset-password', email)
+    const {data} = await postRequest('forgot-password', email)
+
+    return data.status;
+}
+export async function updatePassword(resetCreds: ResetCreds){
+    await csrfRequest()
+    const {data} = await putRequest('update-password', resetCreds)
+
+    return data.status;
+}
+export async function clearRequest(email: string){
+    const {data} = await deleteRequest('clear-request/'+ email )
 
     return data.status;
 }

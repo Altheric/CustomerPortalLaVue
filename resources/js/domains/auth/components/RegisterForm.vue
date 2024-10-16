@@ -31,7 +31,7 @@ function submit(){
         <label for="form-email">Email:</label>
         <input type="email" id="form-email" v-model="registerEmail" required min="3" max="60"><br>
         <label for="form-password">Wachtwoord:</label>
-        <input type="password" id="form-password" v-model="registerPassword" required min="3" max="60"><br>
+        <input type="password" id="form-password" v-model="registerPassword" required min="8" max="60"><br>
         <input type="submit" value="Maak een account aan">
     </form>
 </template>
