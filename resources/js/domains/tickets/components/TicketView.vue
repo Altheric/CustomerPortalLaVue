@@ -1,6 +1,8 @@
 <script setup lang="ts">
 //Imports
+import { goToEditPage } from 'services/router';
 import type { Ticket } from '../types';
+import { TICKET_DOMAIN_NAME } from '..';
 
 //Props
 const props = defineProps<{
@@ -11,6 +13,8 @@ const props = defineProps<{
 const emit = defineEmits([
     'select'
 ]);
+
+//Refs
 </script>
 
 <template>

@@ -14,7 +14,7 @@ Route::controller(AuthController::class)->group(function () {
     Route::get('current-user', 'currentUser');
     Route::post('forgot-password', 'forgotPassword');
     Route::put('update-password', 'updatePassword');
-    Route::delete('clear-request', 'clearToken');
+    Route::delete('clear-request/{email}', 'clearToken');
     Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('logout', 'logout');
         
@@ -24,6 +24,8 @@ Route::controller(AuthController::class)->group(function () {
 Route::controller(TicketController::class)->group(function () {
     Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('tickets', 'index');
+        Route::post('store-ticket', 'store');
+        Route::put('update-ticket/{id}', 'update');
     });
 });
 

@@ -127,8 +127,8 @@ class AuthController extends Controller
     /**
      * Remove the PasswordResetRequest from the table after a succesful password update.
      */
-    public function clearToken(Request $request){
-        $passReset = PasswordResetToken::where('email', $request['email'])->get()->first();
+    public function clearToken($email){
+        $passReset = PasswordResetToken::where('email', $email)->get()->first();
 
         $passReset->delete();
     }

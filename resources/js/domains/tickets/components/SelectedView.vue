@@ -6,6 +6,9 @@ import { userStore } from 'domains/user';
 import { categoryStore } from 'domains/category';
 import { messageStore } from 'domains/messages';
 import type { Ticket } from '../types';
+import { getLoggedInUser } from 'domains/auth';
+import { goToEditPage } from 'services/router';
+import { TICKET_DOMAIN_NAME } from '..';
 
 //Props
 const props =  defineProps<{
@@ -19,6 +22,8 @@ const emit = defineEmits([
 ]);
 
 //Refs
+const user = computed(() => getLoggedInUser.value)
+
 const ticket = computed<Ticket>(() => ticketStore.getters.byId(props.ticketID).value)
 
 const selectedAdmin = (id: number) => computed(() => userStore.getters.byId(id).value)
@@ -26,10 +31,12 @@ const selectedAdmin = (id: number) => computed(() => userStore.getters.byId(id).
 const selectedCategory = computed(() => categoryStore.getters.byId(ticket.value.category_id).value)
 
 const responses = computed(() => messageStore.getters.getMessagesByTnT(props.ticketID, 'response').value)
+
 </script>
 
 <template>
-    <a href="#" @click="$emit('revert')">Terug</a>
+    <button @click="$emit('revert')">Terug</button>
+    <button v-if="ticket.user_id == user?.id" @click="goToEditPage(TICKET_DOMAIN_NAME, ticket.id)">Bewerken</button>
     <p>{{ ticket.title }}</p>
     <p>{{ ticket.user!.name }}</p>
     <p>Gepost op: {{ ticket.created_at }} onder {{ selectedCategory.category }}</p>
