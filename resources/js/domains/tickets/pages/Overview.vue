@@ -9,6 +9,7 @@ import TicketView from '../components/TicketView.vue';
 import SelectedView from '../components/SelectedView.vue';
 import CategoryFilter from '../components/CategoryFilter.vue';
 import { getCurrentRouteId } from 'services/router';
+import { getLoggedInUser } from 'domains/auth';
 import type { Ticket } from '../types';
 
 userStore.actions.getAll();
@@ -17,9 +18,9 @@ categoryStore.actions.getAll();
 messageStore.actions.getAll();
 
 //Refs
+const user = computed(() => getLoggedInUser.value)
 const filter = ref<number>(0);
 const selection = ref<number>(0);
-
 const userID = computed<number | undefined>(() => {
     try{
         return getCurrentRouteId()
@@ -29,9 +30,9 @@ const userID = computed<number | undefined>(() => {
 })
 
 const tickets = (category: number) => computed<Ticket[]>(() => {
-    if(category == 0 && userID.value){
+    if(category == 0 && userID.value == user.value?.id){
         return ticketStore.getters.getUserTickets(userID.value!).value
-    } else if (userID.value) {
+    } else if (userID.value == user.value?.id) {
         return ticketStore.getters.getUserTicketsByCategory(category, userID.value!).value
     } else if (category > 0 && !userID.value){
         return ticketStore.getters.getTicketsByCategory(category).value
