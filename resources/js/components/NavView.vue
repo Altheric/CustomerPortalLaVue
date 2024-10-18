@@ -13,7 +13,7 @@ const user = computed(() => getLoggedInUser.value);
     <nav>
         <RouterLink to="/tickets" style="padding-right:20px;">Overzicht</RouterLink>
         <div v-if="user!.role == 'admin'" style="display: inline-block">
-            
+            <RouterLink :to="'/ticket/' + user!.id"  style="padding-right:20px;">Toegestuurde Tickets</RouterLink>
         </div>
         <div v-else style="display: inline-block">
             <RouterLink :to="'/ticket/' + user!.id"  style="padding-right:20px;">Bekijk Mijn Tickets</RouterLink>

@@ -1,5 +1,6 @@
 import {storeModuleFactory} from 'services/store';
 import { computed } from 'vue';
+import { postRequest } from 'services/http';
 import type { Message } from './types';
 
 
@@ -21,4 +22,10 @@ export const messageStore = {
         /** Get all tickets with the relevant ticket-id and type from the store.*/
         getMessagesByTnT: (id: number, type: string) => computed<Message[]>(() => Object.values(baseMessageStore.state.value).filter((message) => message.ticket_id == id && message.type == type))
     }
+}
+
+export async function createMessage(message: Message){
+    const {data} = await postRequest('store-message', message)
+    
+    return data.status;
 }

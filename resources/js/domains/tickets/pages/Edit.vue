@@ -11,8 +11,6 @@ import type { Ticket } from '../types';
 import { updateTicket, TICKET_DOMAIN_NAME } from '..';
 import { getCurrentRouteId, goToOverviewPage } from 'services/router';
 
-//Edit route: ticket/:id/aanpassen
-
 //Stores Setup
 userStore.actions.getAll();
 ticketStore.actions.getAll();

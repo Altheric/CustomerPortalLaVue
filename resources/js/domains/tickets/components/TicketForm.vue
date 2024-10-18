@@ -25,9 +25,8 @@ const ticketID = ref<number>(props.ticket.id);
 const title = ref<string>(props.ticket.title);
 const content = ref<string>(props.ticket.content);
 const categoryID = ref<number>(props.ticket.category_id);
-const adminID = ref<number>(props.ticket.admin_id);
 const userID = ref<number>(props.ticket.user_id);
-const status = ref<string>(props.ticket.status);
+const status = ref<string | null>(props.ticket.status);
 
 //Functions
 function submit(){
@@ -37,7 +36,6 @@ function submit(){
         content: content.value,
         category_id: categoryID.value,
         user_id: userID.value,
-        admin_id: adminID.value,
         status: status.value
     }
     emit('submit', newTicket);
@@ -53,10 +51,6 @@ function submit(){
         <select v-model.number="categoryID" required>
             <option disabled value="">Kies een categorie</option>
             <option v-for="category in categories" :value="category.id" :key="category.id">{{ category.category }}</option>
-        </select>
-        <select v-model.number="adminID" required>
-            <option disabled value="">Kies een contactpersoon</option>
-            <option v-for="admin in admins" :value="admin.id" :key="admin.id">{{ admin.name }}</option>
         </select>
         <input type="submit" v-model="actionType">
     </form>

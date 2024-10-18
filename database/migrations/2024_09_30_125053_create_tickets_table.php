@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('status')->default('unhandled');
             $table->foreignId('category_id');
             $table->foreignId('user_id');
-            $table->foreignId('admin_id');
+            $table->foreignId('admin_id')->nullable();
         });
     }
 

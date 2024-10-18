@@ -18,7 +18,7 @@ const props =  defineProps<{
 
 //Emits
 const emit = defineEmits([
-    'revert'
+    'revert', 'assign'
 ]);
 
 //Refs
@@ -27,6 +27,8 @@ const user = computed(() => getLoggedInUser.value)
 const ticket = computed<Ticket>(() => ticketStore.getters.byId(props.ticketID).value)
 
 const selectedAdmin = (id: number) => computed(() => userStore.getters.byId(id).value)
+
+
 
 const selectedCategory = computed(() => categoryStore.getters.byId(ticket.value.category_id).value)
 
@@ -41,7 +43,8 @@ const responses = computed(() => messageStore.getters.getMessagesByTnT(props.tic
     <p>{{ ticket.user!.name }}</p>
     <p>Gepost op: {{ ticket.created_at }} onder {{ selectedCategory.category }}</p>
     <p>{{ ticket.content }}</p>
-    <p>In behandeling door: {{ selectedAdmin(ticket.admin_id).value.name }}</p>
+    <p v-if="ticket.admin_id">In behandeling door: {{ selectedAdmin(ticket.admin_id).value.name }}</p>
+    <p v-else>Nog door niemand in behandeling.</p>
     <p>Status: {{ ticket.status }}</p>
     <h2>Reacties</h2>
     <div>
@@ -49,9 +52,5 @@ const responses = computed(() => messageStore.getters.getMessagesByTnT(props.tic
             <p>{{ selectedAdmin(response.user_id).value.name }}</p>
             <p>{{ response.content }}</p>
         </div>
-    </div>
-    <div v-if="user?.role == 'admin'">
-        <h2>Plaats een reactie</h2>
-        <!--MESSAGE FORM-->
     </div>
 </template>

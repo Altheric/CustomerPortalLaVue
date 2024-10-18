@@ -34,7 +34,15 @@ export const ticketStore = {
         /** Get all tickets of the userID from the store.*/
         getUserTickets: (id: number) => computed(() => Object.values(baseTicketStore.state.value).filter((ticket) => ticket.user!.id == id)),
         /** Get all tickets with the relevant category_id of the user_id from the store.*/
-        getUserTicketsByCategory: (category: number, user: number) => computed<Ticket[]>(() => Object.values(baseTicketStore.state.value).filter((ticket) => ticket.category_id == category && ticket.user_id == user)),
+        getUserTicketsByCategory: (category: number, user: number) => computed<Ticket[]>(() =>{
+            return Object.values(baseTicketStore.state.value).filter((ticket) => ticket.category_id == category && ticket.user_id == user)
+        }),
+        /** Get all tickets of the relevant admin_id */
+        getAssignedTickets: (adminID: number) => computed(() => Object.values(baseTicketStore.state.value).filter((ticket) => ticket.admin_id == adminID)),
+         /** Get all tickets with the relevant category_id of the admin_id from the store.*/
+        getAssignedTicketsByCategory: (category: number, adminID: number) => computed<Ticket[]>(() =>{
+            return Object.values(baseTicketStore.state.value).filter((ticket) => ticket.category_id == category && ticket.admin_id == adminID)
+        }),
     }
 }
 
@@ -46,6 +54,12 @@ export async function createTicket(ticket: Ticket){
 
 export async function updateTicket(id: number, ticket: Ticket){
     const {data} = await putRequest('update-ticket/' + id, ticket)
+    
+    return data.status;
+}
+
+export async function updateAssignment(id: number, newID: {admin_id: number}){
+    const {data} = await putRequest('assign-ticket/' + id, newID)
     
     return data.status;
 }

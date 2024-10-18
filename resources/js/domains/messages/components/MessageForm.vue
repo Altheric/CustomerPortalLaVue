@@ -1,6 +1,6 @@
 <script setup lang="ts">
 //Imports
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import type { Message } from '../types';
 import type { User } from 'domains/user/types';
 //Props
@@ -18,6 +18,7 @@ const emit = defineEmits([
 //Refs
 const content = ref<string>('');
 const actionType = ref<string>(props.actionType);
+const submitType = computed<string>(() => actionType.value == 'response' ? 'Plaats reactie' : 'Plaats notitie')
 const ticketID = ref<number>(props.ticketID);
 const user = ref<User>(props.user)
 
@@ -30,13 +31,13 @@ function submit(){
         ticket_id: ticketID.value,
         user_id: user.value.id
     } 
-    emit('submit');
+    emit('submit', newMessage);
 }
 </script>
 
 <template>
     <form @submit.prevent="submit">
         <input type="text" id="form-text" v-model="content" required min="8"><br>
-        <input type="submit" value="Post">
+        <input type="submit" v-model="submitType">
     </form>
 </template>

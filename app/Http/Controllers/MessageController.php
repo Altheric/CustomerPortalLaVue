@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Message;
+use App\Models\Ticket;
 use App\Http\Requests\StoreMessageRequest;
 use App\Http\Requests\UpdateMessageRequest;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Mail\NotificationMail;
+use Illuminate\Support\Facades\Mail;
 
 class MessageController extends Controller
 {
@@ -18,20 +22,25 @@ class MessageController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * Store a newly created resource in storage and sent a notification email if this message is a response.
      */
     public function store(StoreMessageRequest $request)
     {
-        //
-    }
+        $validated = $request->validated();
+
+        $message = Message::create($validated);
+
+        if($message->type == 'response'){
+            //Email to user.
+            $ticket = Ticket::with('user')->where('id', $message->ticket_id)->get()->first();
+            $url = "http://127.0.0.1:8000/ticket/{$ticket->id}";;
+            Mail::to($ticket->user->email)->send(new NotificationMail($ticket->user, $url));
+        }
+
+        return new JsonResponse([
+            'status' => 200
+        ]);
+    }   
 
     /**
      * Display the specified resource.

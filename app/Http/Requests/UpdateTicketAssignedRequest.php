@@ -4,13 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreTicketRequest extends FormRequest
+class UpdateTicketAssignedRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
+        //Admin Only
         return true;
     }
 
@@ -22,11 +23,8 @@ class StoreTicketRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|max:60',
-            'content' => 'required',
             'status' => 'nullable',
-            'category_id' => 'required|exists:categories,id',
-            'user_id' => 'required|exists:users,id',
+            'admin_id' => 'nullable|exists:users,id'
         ];
     }
 }
