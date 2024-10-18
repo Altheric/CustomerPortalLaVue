@@ -1,9 +1,11 @@
 //Imports
 import {storeModuleFactory} from 'services/store';
 import { setTranslation } from 'services/translation';
-import { createOverviewRoute, createShowRoute,  createCreateRoute, createEditRoute} from 'services/router/factory';
+import { createOverviewRoute,  createCreateRoute, createEditRoute} from 'services/router/factory';
 //Page Imports
-import OverviewPage from './Pages/Overview.vue';
+import OverviewPage from './pages/Overview.vue';
+import CreatePage from './pages/Create.vue';
+import EditPage from './pages/Edit.vue';
 //Type Imports
 import type { Category } from './types';
 
@@ -18,9 +20,8 @@ setTranslation(CATEGORY_DOMAIN_NAME, {
 
 export const categoryRoutes = [
     createOverviewRoute(CATEGORY_DOMAIN_NAME, OverviewPage),
-    // createShowRoute(CATEGORY_DOMAIN_NAME, OverviewPage),
-    // createCreateRoute(CATEGORY_DOMAIN_NAME, CreatePage),
-    // createEditRoute(CATEGORY_DOMAIN_NAME, EditPage)
+    createCreateRoute(CATEGORY_DOMAIN_NAME, CreatePage),
+    createEditRoute(CATEGORY_DOMAIN_NAME, EditPage)
 ]
 
 //Store Definition

@@ -33,13 +33,18 @@ Route::controller(TicketController::class)->group(function () {
 
 Route::controller(UserController::class)->group(function () {
     Route::middleware(['auth:sanctum'])->group(function () {
+        //Admin auth! vvvv
         Route::get('users', 'index');
     });
 });
 
 Route::controller(CategoryController::class)->group(function () {
     Route::middleware(['auth:sanctum'])->group(function () {
+        //Admin auth! vvvv
         Route::get('categories', 'index');
+        Route::post('categories', 'store');
+        Route::put('categories/{id}', 'update');
+        Route::delete('categories/{id}', 'destroy');
     });
 });
 

@@ -14,6 +14,7 @@ const user = computed(() => getLoggedInUser.value);
         <RouterLink to="/tickets" style="padding-right:20px;">Overzicht</RouterLink>
         <div v-if="user!.role == 'admin'" style="display: inline-block">
             <RouterLink :to="'/ticket/' + user!.id"  style="padding-right:20px;">Toegestuurde Tickets</RouterLink>
+            <RouterLink to="/categorieen"  style="padding-right:20px;">Categorieen Beheren</RouterLink>
         </div>
         <div v-else style="display: inline-block">
             <RouterLink :to="'/ticket/' + user!.id"  style="padding-right:20px;">Bekijk Mijn Tickets</RouterLink>

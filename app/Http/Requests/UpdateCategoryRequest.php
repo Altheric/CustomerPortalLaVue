@@ -11,7 +11,8 @@ class UpdateCategoryRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        //Admin only!
+        return true;
     }
 
     /**
@@ -22,7 +23,7 @@ class UpdateCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'category' => 'required|min:3|max:60'
         ];
     }
 }
