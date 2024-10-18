@@ -26,11 +26,9 @@ class TicketController extends Controller
     {
         $validated = $request->validated();
 
-        Ticket::create($validated);
+        $ticket = Ticket::with('user')->create($validated);
 
-        return new JsonResponse([
-            'status' => 200
-        ]);
+        return response()->json($ticket);
     }
 
     /**
@@ -39,12 +37,10 @@ class TicketController extends Controller
     public function update(UpdateTicketRequest $request, $id)
     {
         $validated = $request->validated();
-        $ticket = Ticket::where('id', $id)->get()->first();
+        $ticket = Ticket::with('user')->where('id', $id)->get()->first();
         $ticket->update($validated);
 
-        return new JsonResponse([
-            'status' => 200
-        ]);
+        return response()->json($ticket);
     }   
     /**
      * Update the admin_id in the specified resource in storage.
@@ -52,15 +48,13 @@ class TicketController extends Controller
     public function updateAssigned(UpdateTicketAssignedRequest $request, $id)
     {
         $validated = $request->validated();
-        $ticket = Ticket::where('id', $id)->get()->first();
+        $ticket = Ticket::with('user')->where('id', $id)->get()->first();
         $ticket->update([
             'admin_id' => $validated['admin_id'], 
             'status' => $validated['status']
         ]);
 
-        return new JsonResponse([
-            'status' => 200
-        ]);
+        return response()->json($ticket);
     }   
 
     /**

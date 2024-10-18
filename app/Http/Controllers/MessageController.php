@@ -37,9 +37,7 @@ class MessageController extends Controller
             Mail::to($ticket->user->email)->send(new NotificationMail($ticket->user, $url));
         }
 
-        return new JsonResponse([
-            'status' => 200
-        ]);
+        return response()->json($message);
     }   
 
     /**

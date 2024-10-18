@@ -1,7 +1,7 @@
 <script setup lang="ts">
 //Imports
 import { ref, computed } from 'vue';
-import { ticketStore, updateAssignment } from '..';
+import { ticketStore } from '..';
 import { userStore } from 'domains/user';
 import { categoryStore } from 'domains/category';
 import { messageStore } from 'domains/messages';
@@ -12,7 +12,6 @@ import AssignmentForm from '../components/AssignmentForm.vue';
 import MessageForm from 'domains/messages/components/MessageForm.vue';
 import { getCurrentRouteId } from 'services/router';
 import { getLoggedInUser } from 'domains/auth';
-import { createMessage } from 'domains/messages';
 import type { Ticket } from '../types';
 import type { Message } from 'domains/messages/types';
 
@@ -52,17 +51,19 @@ const tickets = (category: number) => computed<Ticket[]>(() => {
 
 
 //Functions
-async function assignmentFormHandler(newAdminID: {admin_id: number}){
-    const status = await updateAssignment(selection.value, newAdminID);
-    if(status == 200){
-        ticketStore.actions.getAll();
+async function assignmentFormHandler(ticketStatus: {admin_id: number | null | undefined, status: string | null}){
+    try{
+        await ticketStore.actions.updateAssignment(selection.value, ticketStatus);
+    } catch(error) {
+        console.error(error)
     }
 }
 
 async function messsageFormHandler(newMessage: Message){
-    const status = await createMessage(newMessage);
-    if(status == 200){
-        ticketStore.actions.getAll();
+    try{
+        await messageStore.actions.create(newMessage);
+    } catch(error) {
+        console.error(error)
     }
 }
 </script>
@@ -75,7 +76,7 @@ async function messsageFormHandler(newMessage: Message){
     <div v-else>
         <SelectedView :ticketID="selection" @revert="selection = 0"/>
         <div v-if="user?.role == 'admin'">
-            <AssignmentForm :admins="admins" :ticket="tickets(filter).value[0]" @submit="(adminID) => assignmentFormHandler(adminID)" id="admin-assignment-form"/>
+            <AssignmentForm :admins="admins" :ticket="tickets(filter).value[0]" @submit="(ticketStatus) => assignmentFormHandler(ticketStatus)" id="admin-assignment-form"/>
             <MessageForm :actionType="'response'" :ticketID="selection" :user="user" @submit="(response) => messsageFormHandler(response)" id="admin-response-form"/>
         </div>
     </div>

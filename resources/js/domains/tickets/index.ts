@@ -1,13 +1,18 @@
-import { createOverviewRoute, createCreateRoute, createShowRoute, createEditRoute } from 'services/router/factory';
-import OverviewPage from './pages/Overview.vue';
-import CreatePage from './pages/Create.vue';
-import EditPage from './pages/Edit.vue';
+//Imports
 import { setTranslation } from 'services/translation';
 import { storeModuleFactory } from 'services/store';
 import { computed } from 'vue';
-import type { Ticket } from './types';
 import { postRequest, putRequest } from 'services/http';
+import { createOverviewRoute, createCreateRoute, createShowRoute, createEditRoute } from 'services/router/factory';
+//Page Imports
+import OverviewPage from './pages/Overview.vue';
+import CreatePage from './pages/Create.vue';
+import EditPage from './pages/Edit.vue';
+//Type Imports
+import type { Ticket } from './types';
 
+
+//Route Definition
 export const TICKET_DOMAIN_NAME = 'tickets';
 
 setTranslation(TICKET_DOMAIN_NAME, {
@@ -22,11 +27,19 @@ export const ticketRoutes = [
     createEditRoute(TICKET_DOMAIN_NAME, EditPage)
 ]
 
+//Store Definition
 const baseTicketStore = storeModuleFactory<Ticket>(TICKET_DOMAIN_NAME)
 
 export const ticketStore = {
     setters: baseTicketStore.setters,
-    actions: baseTicketStore.actions,
+    actions: {
+        ...baseTicketStore.actions,
+        updateAssignment: async (id: number, item: {admin_id: number | null | undefined, status: string | null}) => {
+            const {data} = await putRequest(`tickets/${id}/assign`, item);
+            if (!data) return;
+            ticketStore.setters.setById(data);
+        }
+    },
     getters: {
         ...baseTicketStore.getters,
         /** Get all tickets with the relevant category_id from the store.*/
@@ -44,22 +57,4 @@ export const ticketStore = {
             return Object.values(baseTicketStore.state.value).filter((ticket) => ticket.category_id == category && ticket.admin_id == adminID)
         }),
     }
-}
-
-export async function createTicket(ticket: Ticket){
-    const {data} = await postRequest('store-ticket', ticket)
-    
-    return data.status;
-}
-
-export async function updateTicket(id: number, ticket: Ticket){
-    const {data} = await putRequest('update-ticket/' + id, ticket)
-    
-    return data.status;
-}
-
-export async function updateAssignment(id: number, newID: {admin_id: number}){
-    const {data} = await putRequest('assign-ticket/' + id, newID)
-    
-    return data.status;
 }

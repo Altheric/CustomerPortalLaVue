@@ -8,7 +8,7 @@ import { ticketStore } from '..';
 import { categoryStore } from 'domains/category';
 import { messageStore } from 'domains/messages';
 import type { Ticket } from '../types';
-import { createTicket, TICKET_DOMAIN_NAME } from '..';
+import { TICKET_DOMAIN_NAME } from '..';
 import { goToOverviewPage } from 'services/router';
 
 //Stores Setup
@@ -33,9 +33,11 @@ const newTicket: Ticket = {
 
 //Functions
 async function ticketCreateHandler(ticket: Ticket){
-    const status = await createTicket(ticket);
-    if(status == 200){
-        goToOverviewPage(TICKET_DOMAIN_NAME)
+    try{
+        await ticketStore.actions.create(ticket);
+        goToOverviewPage(TICKET_DOMAIN_NAME);
+    } catch(error) {
+        console.error(error)
     }
 }
 </script>

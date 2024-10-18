@@ -24,10 +24,10 @@ Route::controller(AuthController::class)->group(function () {
 Route::controller(TicketController::class)->group(function () {
     Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('tickets', 'index');
-        Route::post('store-ticket', 'store');
-        Route::put('update-ticket/{id}', 'update');
+        Route::post('tickets', 'store');
+        Route::put('tickets/{id}', 'update');
         //Admin auth! vvvv 
-        Route::put('assign-ticket/{id}', 'updateAssigned');
+        Route::put('tickets/{id}/assign', 'updateAssigned');
     });
 });
 
@@ -47,6 +47,6 @@ Route::controller(MessageController::class)->group(function () {
     Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('messages', 'index');
         //Admin auth! vvvv
-        Route::post('store-message', 'store');
+        Route::post('messages', 'store');
     });
 });
