@@ -34,7 +34,7 @@ function submit(){
 </script>
 
 <template>
-    <form @submit.prevent="submit">
+    <form @submit.prevent="submit" id="admin-assignment-form">
         <select v-model.number="adminID">
             <option disabled value="">Selecteer iemand om de ticket op te pakken.</option>
             <option v-for="admin in admins" :value="admin.id" :key="admin.id" >{{ admin.name }}</option>

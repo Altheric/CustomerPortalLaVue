@@ -4,11 +4,10 @@ import { computed } from 'vue';
 import { ticketStore } from '..';
 import { userStore } from 'domains/user';
 import { categoryStore } from 'domains/category';
-import { messageStore } from 'domains/messages';
-import type { Ticket } from '../types';
 import { getLoggedInUser } from 'domains/auth';
 import { goToEditPage } from 'services/router';
 import { TICKET_DOMAIN_NAME } from '..';
+import type { Ticket } from '../types';
 
 //Props
 const props =  defineProps<{
@@ -28,11 +27,8 @@ const ticket = computed<Ticket>(() => ticketStore.getters.byId(props.ticketID).v
 
 const selectedAdmin = (id: number) => computed(() => userStore.getters.byId(id).value)
 
-
-
 const selectedCategory = computed(() => categoryStore.getters.byId(ticket.value.category_id).value)
 
-const responses = computed(() => messageStore.getters.getMessagesByTnT(props.ticketID, 'response').value)
 
 </script>
 
@@ -46,11 +42,4 @@ const responses = computed(() => messageStore.getters.getMessagesByTnT(props.tic
     <p v-if="ticket.admin_id">In behandeling door: {{ selectedAdmin(ticket.admin_id).value.name }}</p>
     <p v-else>Nog door niemand in behandeling.</p>
     <p>Status: {{ ticket.status }}</p>
-    <h2>Reacties</h2>
-    <div>
-        <div v-for="response in responses">
-            <p>{{ selectedAdmin(response.user_id).value.name }}</p>
-            <p>{{ response.content }}</p>
-        </div>
-    </div>
 </template>

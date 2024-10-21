@@ -26,21 +26,18 @@ Route::controller(TicketController::class)->group(function () {
         Route::get('tickets', 'index');
         Route::post('tickets', 'store');
         Route::put('tickets/{id}', 'update');
-        //Admin auth! vvvv 
         Route::put('tickets/{id}/assign', 'updateAssigned');
     });
 });
 
 Route::controller(UserController::class)->group(function () {
     Route::middleware(['auth:sanctum'])->group(function () {
-        //Admin auth! vvvv
         Route::get('users', 'index');
     });
 });
 
 Route::controller(CategoryController::class)->group(function () {
     Route::middleware(['auth:sanctum'])->group(function () {
-        //Admin auth! vvvv
         Route::get('categories', 'index');
         Route::post('categories', 'store');
         Route::put('categories/{id}', 'update');
@@ -51,7 +48,8 @@ Route::controller(CategoryController::class)->group(function () {
 Route::controller(MessageController::class)->group(function () {
     Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('messages', 'index');
-        //Admin auth! vvvv
         Route::post('messages', 'store');
+        Route::put('messages/{id}', 'update');
+        Route::delete('messages/{id}', 'destroy');
     });
 });

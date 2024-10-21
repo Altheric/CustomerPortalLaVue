@@ -11,7 +11,8 @@ class UpdateMessageRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        //Admin only!
+        return true;
     }
 
     /**
@@ -22,7 +23,10 @@ class UpdateMessageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'content' => 'required',
+            'type' => 'required',
+            'ticket_id' => 'required|exists:tickets,id',
+            'user_id' => 'required|exists:users,id',
         ];
     }
 }

@@ -39,29 +39,16 @@ class MessageController extends Controller
 
         return response()->json($message);
     }   
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Message $message)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Message $message)
-    {
-        //
-    }
-
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateMessageRequest $request, Message $message)
+    public function update(UpdateMessageRequest $request, int $id)
     {
-        //
+        $validated = $request->validated();
+        $message = Message::where('id', $id)->get()->first();
+        $message->update($validated);
+
+        return response()->json($message);
     }
 
     /**

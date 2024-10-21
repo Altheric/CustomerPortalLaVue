@@ -1,8 +1,6 @@
 <script setup lang="ts">
 //Imports
-import { goToEditPage } from 'services/router';
 import type { Ticket } from '../types';
-import { TICKET_DOMAIN_NAME } from '..';
 
 //Props
 const props = defineProps<{

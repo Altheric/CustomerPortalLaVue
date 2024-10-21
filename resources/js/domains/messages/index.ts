@@ -1,16 +1,20 @@
+//Imports
 import {storeModuleFactory} from 'services/store';
 import { computed } from 'vue';
-import { postRequest } from 'services/http';
+
+//Type Imports
 import type { Message } from './types';
 
 
 export const MESSAGE_DOMAIN_NAME = 'messages';
 
+
+//Store Definition
 export const baseMessageStore = storeModuleFactory<Message>(MESSAGE_DOMAIN_NAME);
 
 export const messageStore = {
     setters: baseMessageStore.setters,
-    actions:baseMessageStore.actions,
+    actions: baseMessageStore.actions,
     getters: {
         ...baseMessageStore.getters,
         /** Get all tickets with the relevant ticket-id from the store.*/
@@ -22,10 +26,4 @@ export const messageStore = {
         /** Get all tickets with the relevant ticket-id and type from the store.*/
         getMessagesByTnT: (id: number, type: string) => computed<Message[]>(() => Object.values(baseMessageStore.state.value).filter((message) => message.ticket_id == id && message.type == type))
     }
-}
-
-export async function createMessage(message: Message){
-    const {data} = await postRequest('store-message', message)
-    
-    return data.status;
 }

@@ -2,7 +2,6 @@
 //Imports
 import { computed, ref } from 'vue';
 import { categoryStore } from 'domains/category';
-import { userStore } from 'domains/user';
 import type { Ticket } from '../types';
 
 //Props
@@ -18,7 +17,6 @@ const emit = defineEmits([
 
 //Refs
 const categories = computed(() => categoryStore.getters.all.value);
-const admins = computed(() => userStore.getters.getAdmins.value);
 
 const actionType = ref<string>(props.actionType);
 const ticketID = ref<number>(props.ticket.id);
