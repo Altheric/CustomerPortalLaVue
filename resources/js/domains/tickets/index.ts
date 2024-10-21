@@ -2,7 +2,7 @@
 import { setTranslation } from 'services/translation';
 import { storeModuleFactory } from 'services/store';
 import { computed } from 'vue';
-import { postRequest, putRequest } from 'services/http';
+import { putRequest } from 'services/http';
 import { createOverviewRoute, createCreateRoute, createShowRoute, createEditRoute } from 'services/router/factory';
 //Page Imports
 import OverviewPage from './pages/Overview.vue';

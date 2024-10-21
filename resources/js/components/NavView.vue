@@ -5,15 +5,16 @@ import { RouterLink } from 'vue-router';
 import { logout, getLoggedInUser } from 'domains/auth';
 
 
-const user = computed(() => getLoggedInUser.value);
-
+const user = computed(() => getLoggedInUser.value!);
+console.log(user.value);
 </script>
 
 <template>
     <nav>
         <RouterLink to="/tickets" style="padding-right:20px;">Overzicht</RouterLink>
-        <div v-if="user!.role == 'admin'" style="display: inline-block">
+        <div v-if="user.is_admin" style="display: inline-block">
             <RouterLink :to="'/ticket/' + user!.id"  style="padding-right:20px;">Toegestuurde Tickets</RouterLink>
+            <RouterLink to="/gebruikers"  style="padding-right:20px;">Gebruikers Beheren</RouterLink>
             <RouterLink to="/categorieen"  style="padding-right:20px;">Categorieen Beheren</RouterLink>
         </div>
         <div v-else style="display: inline-block">

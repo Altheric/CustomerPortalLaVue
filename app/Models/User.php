@@ -22,7 +22,7 @@ class User extends Authenticatable implements CanResetPassword
         'name',
         'email',
         'password',
-        'role'
+        'is_admin'
     ];
 
     /**

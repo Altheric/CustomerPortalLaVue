@@ -34,10 +34,10 @@ class TicketController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTicketRequest $request, $id)
+    public function update(UpdateTicketRequest $request, Ticket $ticket)
     {
         $validated = $request->validated();
-        $ticket = Ticket::with('user')->where('id', $id)->get()->first();
+        // $ticket = Ticket::with('user')->where('id', $id)->get()->first();
         $ticket->update($validated);
 
         return response()->json($ticket);
@@ -62,6 +62,8 @@ class TicketController extends Controller
      */
     public function destroy(Ticket $ticket)
     {
-        //
+        $ticket->delete();
+
+        
     }
 }

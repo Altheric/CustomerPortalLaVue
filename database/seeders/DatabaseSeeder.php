@@ -2,11 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use App\Models\Ticket;
-use App\Models\Category;
-use App\Models\Message;
-
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -17,11 +12,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(20)->create();
-        User::factory(7)->create(['role' => 'admin']);
-        Category::factory(8)->create();
-        Ticket::factory(20)->create();
-        Message::factory(10)->create();
-        Message::factory(15)->create(['type' => 'response']);
+        $this->call([
+            CategorySeeder::class,
+            UserSeeder::class,
+            TicketSeeder::class,
+            MessageSeeder::class,
+
+        ]);
     }
 }

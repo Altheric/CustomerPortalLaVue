@@ -26,14 +26,14 @@ const submitType = computed<string>(() => props.actionType == 'response' ?
 const ticketID = computed<number>(() => props.ticketID ? props.ticketID : props.message? props.message.ticket_id : 0);
 
 //Functions
+const newMessage: Message = {
+    id: id.value,
+    content: content.value,
+    type: props.actionType,
+    ticket_id: ticketID.value,
+    user_id: props.user.id
+} 
 function submit(){
-    const newMessage: Message = {
-        id: id.value,
-        content: content.value,
-        type: props.actionType,
-        ticket_id: ticketID.value,
-        user_id: props.user.id
-    } 
     emit('submit', newMessage);
 }
 </script>

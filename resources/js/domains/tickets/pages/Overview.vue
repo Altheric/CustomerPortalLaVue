@@ -28,7 +28,7 @@ const ticketGetters = ticketStore.getters;
 const user = computed(() => getLoggedInUser.value)
 const filter = ref<number>(0);
 const selection = ref<number>(0);
-const admins = computed(() => userStore.getters.getAdmins.value)
+const admins = computed(() => userStore.getters.getUsersByRole('admin').value)
 
 const userID = computed<number | undefined>(() => {
     try{

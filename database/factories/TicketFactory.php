@@ -22,7 +22,7 @@ class TicketFactory extends Factory
             'title' => fake()->word(),
             'content'=> fake()->paragraph(),
             'category_id'=> Category::inRandomOrder()->first()->id,
-            'user_id' => User::where('role', 'user')->inRandomOrder()->first()->id
+            'user_id' => User::where('is_admin', 0)->inRandomOrder()->first()->id
         ];
     }
 }

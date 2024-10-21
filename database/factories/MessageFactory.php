@@ -21,7 +21,7 @@ class MessageFactory extends Factory
         return [
             'content'=> fake()->paragraph(),
             'ticket_id'=> Ticket::inRandomOrder()->first()->id,
-            'user_id' => User::where('role', 'admin')->inRandomOrder()->first()->id,
+            'user_id' => User::where('is_admin', 1)->inRandomOrder()->first()->id,
         ];
     }
 }

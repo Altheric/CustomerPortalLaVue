@@ -8,26 +8,24 @@ const emit = defineEmits([
     'submit'
 ]);
 
-//Refs
-const loginEmail = ref<string>('');
-const loginPassword = ref<string>('');
-
 //Functions
+const loginCreds = ref<Credentials>({
+    email: '',
+    password: ''
+})
+
+
 function submit(){
-    const loginCreds: Credentials = {
-        email: loginEmail.value,
-        password: loginPassword.value
-    }
-    emit('submit', loginCreds);
+    emit('submit', loginCreds.value);
 }
 </script>
 
 <template>
     <form @submit.prevent="submit">
         <label for="form-email">Email:</label>
-        <input type="email" id="form-email" v-model="loginEmail" required min="3" max="60"><br>
+        <input type="email" id="form-email" v-model="loginCreds.email" required min="3" max="60"><br>
         <label for="form-password">Wachtwoord:</label>
-        <input type="password" id="form-password" v-model="loginPassword" required min="8" max="60"><br>
+        <input type="password" id="form-password" v-model="loginCreds.password" required min="8" max="60"><br>
         <input type="submit" value="Log in">
     </form>
 </template>

@@ -13,11 +13,11 @@ use Illuminate\Support\Facades\Mail;
 class MessageController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the resource and sort it.
      */
     public function index()
     {
-        $message = Message::all();
+        $message = Message::all()->sortBy('created_at');;
         return response()->json($message);
     }
 
@@ -33,7 +33,7 @@ class MessageController extends Controller
         if($message->type == 'response'){
             //Email to user.
             $ticket = Ticket::with('user')->where('id', $message->ticket_id)->get()->first();
-            $url = "http://127.0.0.1:8000/ticket/{$ticket->id}";;
+            $url = "http://127.0.0.1:8000/ticket/{$ticket->id}";
             Mail::to($ticket->user->email)->send(new NotificationMail($ticket->user, $url));
         }
 
@@ -54,8 +54,9 @@ class MessageController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Message $message)
+    public function destroy(int $id)
     {
-        //
+        $message = Message::where('id', $id)->get()->first();
+        $message->delete();
     }
 }
