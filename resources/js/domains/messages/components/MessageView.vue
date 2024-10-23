@@ -27,7 +27,7 @@ const header = computed<string>(() => props.messageType == 'response' ? 'Reactie
         <template v-for="message in messages">
             <div v-if="userID == message.user_id">
                 <button @click="$emit('edit', message)">Edit</button>
-                <button @click="$emit('destroy', message.id)">Delete</button>
+                <button @click="$emit('destroy', message)">Delete</button>
             </div>
             <p>{{ selectedAdmin(message.user_id).value.name }}</p>
             <p>{{ message.content }}</p>

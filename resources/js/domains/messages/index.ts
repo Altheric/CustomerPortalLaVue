@@ -1,7 +1,7 @@
 //Imports
 import {storeModuleFactory} from 'services/store';
 import { computed } from 'vue';
-
+import { getRequest } from 'services/http';
 //Type Imports
 import type { Message } from './types';
 
@@ -14,7 +14,14 @@ export const baseMessageStore = storeModuleFactory<Message>(MESSAGE_DOMAIN_NAME)
 
 export const messageStore = {
     setters: baseMessageStore.setters,
-    actions: baseMessageStore.actions,
+    actions: {
+        ...baseMessageStore.actions,
+        getTicketMessages: async (id:number) => {
+            const {data} = await getRequest(MESSAGE_DOMAIN_NAME + '/ticket/' + id);
+            if (!data) return;
+            messageStore.setters.setAll(data);
+        }
+    },
     getters: {
         ...baseMessageStore.getters,
         /** Get all tickets with the relevant ticket-id from the store.*/

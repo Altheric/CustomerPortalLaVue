@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Log;
 use App\Models\Ticket;
+use Illuminate\Http\Request;
+use App\Http\Resources\TicketResource;
 use App\Http\Requests\StoreTicketRequest;
 use App\Http\Requests\UpdateTicketRequest;
 use App\Http\Requests\UpdateTicketAssignedRequest;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class TicketController extends Controller
@@ -13,10 +17,9 @@ class TicketController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $tickets = Ticket::with('user')->get();
-        return response()->json($tickets);
+        return TicketResource::collection(Ticket::all());
     }
 
     /**
@@ -26,9 +29,9 @@ class TicketController extends Controller
     {
         $validated = $request->validated();
 
-        $ticket = Ticket::with('user')->create($validated);
+        $ticket = Ticket::create($validated);
 
-        return response()->json($ticket);
+        return new TicketResource($ticket);
     }
 
     /**
@@ -37,24 +40,22 @@ class TicketController extends Controller
     public function update(UpdateTicketRequest $request, Ticket $ticket)
     {
         $validated = $request->validated();
-        // $ticket = Ticket::with('user')->where('id', $id)->get()->first();
         $ticket->update($validated);
 
-        return response()->json($ticket);
+        return new TicketResource($ticket);
     }   
     /**
-     * Update the admin_id in the specified resource in storage.
+     * Update the admin_id and status on the specified resource in storage.
      */
-    public function updateAssigned(UpdateTicketAssignedRequest $request, $id)
+    public function updateAssigned(UpdateTicketAssignedRequest $request, Ticket $ticket)
     {
         $validated = $request->validated();
-        $ticket = Ticket::with('user')->where('id', $id)->get()->first();
         $ticket->update([
             'admin_id' => $validated['admin_id'], 
             'status' => $validated['status']
         ]);
 
-        return response()->json($ticket);
+        return new TicketResource($ticket);
     }   
 
     /**
@@ -64,6 +65,6 @@ class TicketController extends Controller
     {
         $ticket->delete();
 
-        
+        return new JsonResponse(null, 200);
     }
 }

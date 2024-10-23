@@ -20,39 +20,13 @@ Route::controller(AuthController::class)->group(function () {
     });
 });
 
-Route::controller(TicketController::class)->group(function () {
-    Route::middleware(['auth:sanctum'])->group(function () {
-        Route::get('tickets', 'index');
-        Route::post('tickets', 'store');
-        Route::put('tickets/{ticket}', 'update');
-        Route::put('tickets/{ticket}/assign', 'updateAssigned');
-    });
-});
-
-Route::controller(UserController::class)->group(function () {
-    Route::middleware(['auth:sanctum'])->group(function () {
-        Route::get('users', 'index');
-        Route::put('users/{id}', 'update');
-        Route::delete('users/{id}', 'destroy');
-    });
-});
-
-Route::controller(CategoryController::class)->group(function () {
-    Route::middleware(['auth:sanctum'])->group(function () {
-        Route::get('categories', 'index');
-        Route::post('categories', 'store');
-        Route::put('categories/{id}', 'update');
-        Route::delete('categories/{id}', 'destroy');
-    });
-});
-
-// Route::resource('categories', CategoryController::class);
-
-Route::controller(MessageController::class)->group(function () {
-    Route::middleware(['auth:sanctum'])->group(function () {
-        Route::get('messages', 'index');
-        Route::post('messages', 'store');
-        Route::put('messages/{id}', 'update');
-        Route::delete('messages/{id}', 'destroy');
-    });
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('messages/ticket/{id}', [MessageController::class, 'showForTicket']);
+    Route::get('users/admins', [UserController::class, 'showAdmins']);
+    Route::apiResources([
+        'tickets' => TicketController::class,
+        'users' => UserController::class,
+        'categories' => CategoryController::class,
+        'messages' => MessageController::class,
+    ]);
 });

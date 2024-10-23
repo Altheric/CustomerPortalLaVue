@@ -6,7 +6,7 @@ import { logout, getLoggedInUser } from 'domains/auth';
 
 
 const user = computed(() => getLoggedInUser.value!);
-console.log(user.value);
+
 </script>
 
 <template>

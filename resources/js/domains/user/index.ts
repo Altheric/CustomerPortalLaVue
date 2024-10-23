@@ -3,6 +3,7 @@ import {storeModuleFactory} from 'services/store';
 import { computed } from 'vue';
 import { createOverviewRoute, createEditRoute } from 'services/router/factory';
 import { setTranslation } from 'services/translation';
+import { getRequest } from 'services/http';
 //Component Imports
 import OverviewPage from './pages/Overview.vue';
 import EditPage from './pages/Edit.vue';
@@ -31,10 +32,20 @@ const baseUserStore = storeModuleFactory<User>(USER_DOMAIN_NAME);
 
 export const userStore = {
     setters: baseUserStore.setters,
-    actions:baseUserStore.actions,
+    actions: {
+        ...baseUserStore.actions,
+        /** Retrieve the admins from the database.*/
+        getAdmins: async () => {
+            const {data} = await getRequest(USER_DOMAIN_NAME + '/admins');
+            if (!data) return;
+            userStore.setters.setAll(data);
+        }
+    },
     getters: {
         ...baseUserStore.getters,
-        /** Get all user with the specified role from the store.*/
-        getUsersByRole: (role: string) => computed<User[]>(() => Object.values(baseUserStore.state.value).filter((user) => user.role == role)),
+        /** Get all user that are admin from the store.*/
+        getAdmins: computed<User[]>(() => Object.values(baseUserStore.state.value).filter((user) => user.is_admin == true)),
+        /** Get all user that are users from the store.*/
+        getUsers: computed<User[]>(() => Object.values(baseUserStore.state.value).filter((user) => user.is_admin == false)),
     }
 }

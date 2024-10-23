@@ -16,10 +16,9 @@ import MessageOverview from 'domains/messages/components/MessageOverview.vue';
 import type { Ticket } from '../types';
 
 //Store Setup
-userStore.actions.getAll();
 ticketStore.actions.getAll();
 categoryStore.actions.getAll();
-
+userStore.actions.getAdmins();
 
 //Vars
 const ticketGetters = ticketStore.getters;
@@ -28,7 +27,7 @@ const ticketGetters = ticketStore.getters;
 const user = computed(() => getLoggedInUser.value)
 const filter = ref<number>(0);
 const selection = ref<number>(0);
-const admins = computed(() => userStore.getters.getUsersByRole('admin').value)
+const admins = computed(() => userStore.getters.getAdmins.value)
 
 const userID = computed<number | undefined>(() => {
     try{
@@ -40,7 +39,7 @@ const userID = computed<number | undefined>(() => {
 
 const tickets = (category: number) => computed<Ticket[]>(() => {
     if (userID.value == user.value?.id) {
-        if(user.value?.role == 'admin'){
+        if(user.value!.is_admin == true){
             return category == 0 ? ticketGetters.getAssignedTickets(userID.value!).value : ticketGetters.getAssignedTicketsByCategory(category, userID.value!).value;
         } else {
             return category == 0 ? ticketGetters.getUserTickets(userID.value!).value : ticketGetters.getUserTicketsByCategory(category, userID.value!).value;
@@ -50,6 +49,7 @@ const tickets = (category: number) => computed<Ticket[]>(() => {
     }
 })
 
+const ticket = (ticketID: number) => computed<Ticket>(() => ticketGetters.byId(ticketID).value)
 
 //Functions
 async function assignmentFormHandler(ticketStatus: {admin_id: number | null | undefined, status: string | null}){
@@ -67,9 +67,9 @@ async function assignmentFormHandler(ticketStatus: {admin_id: number | null | un
         <TicketView :tickets="tickets(filter).value" @select="(ticketID) => selection = ticketID"/>
     </div>
     <div v-else>
-        <SelectedView :ticketID="selection" @revert="selection = 0"/>
-        <MessageOverview :user="user!" :ticketID="selection"/>
-        <AssignmentForm v-if="user?.role == 'admin'" :admins="admins" :ticket="tickets(filter).value[0]" @submit="(ticketStatus) => assignmentFormHandler(ticketStatus)"/>
+        <SelectedView :ticket="ticket(selection).value" @revert="selection = 0"/>
+        <MessageOverview :user="user!" :admins="admins" :ticketID="selection"/>
+        <AssignmentForm v-if="user!.is_admin" :admins="admins" :ticket="ticket(selection).value" @submit="(ticketStatus) => assignmentFormHandler(ticketStatus)"/>
 
     </div>
 </template>

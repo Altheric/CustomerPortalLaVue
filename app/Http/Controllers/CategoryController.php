@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
+use App\Http\Resources\CategoryResource;
+use Illuminate\Http\JsonResponse;
+
 class CategoryController extends Controller
 {
     /**
@@ -12,8 +15,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
-        return response()->json($categories);
+        return CategoryResource::collection(Category::all());
     }
 
     /**
@@ -25,27 +27,28 @@ class CategoryController extends Controller
 
         $category = Category::create($validated);
 
-        return response()->json($category);
+        return new CategoryResource($category);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCategoryRequest $request, $id)
+    public function update(UpdateCategoryRequest $request, Category $category)
     {
         $validated = $request->validated();
-        $category = Category::where('id', $id)->get()->first();
+
         $category->update($validated);
 
-        return response()->json($category);
+        return new CategoryResource($category);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Category $category)
     {
-        $category = Category::where('id', $id)->get()->first();
         $category->delete();
+
+        return new JsonResponse(null, 200);
     }
 }

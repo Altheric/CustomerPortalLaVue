@@ -43,16 +43,10 @@ class AuthController extends Controller
             Auth::login($user);
 
             $request->session()->regenerate();
-            return new JsonResponse([
-                'user' => $user,
-                'status' => 200
-            ]);
+            return new JsonResponse(null, 200);
 
         } else {
-            return new JsonResponse([
-                'user' => null,
-                'status' => 406
-            ]); 
+            return new JsonResponse(null, 406); 
         }
     }
     /**
@@ -78,9 +72,7 @@ class AuthController extends Controller
             $user = User::create($validated);
             Mail::to($user->email)->send(new ConfirmRegisterMail($user));
 
-            return new JsonResponse([
-                'status' => 200
-            ]);
+            return new JsonResponse(null, 200);
         } catch(Exception $error) {
             return new JsonResponse([
                 'status' => $error->getMessage()
@@ -98,13 +90,11 @@ class AuthController extends Controller
             'email' => $validated['email'],
             'token' => $resetToken
         ]);
-        $resetURL = "http://127.0.0.1:8000/wachtwoord-vergeten/{$resetToken}/{$validated['email']}";
+        $resetURL = env('APP_URL') + ":8000/wachtwoord-vergeten/{$resetToken}/{$validated['email']}";
 
         Mail::to($user['email'])->send(new ResetPasswordMail($resetURL));
 
-        return new JsonResponse([
-            'status' => 200
-        ]);
+        return new JsonResponse(null, 200);
     }
     /**
      * Update the password if the token and email exists in PasswordResetToken.
@@ -115,13 +105,9 @@ class AuthController extends Controller
         if($passReset->token == $validated['token']){
             $user = User::where('email', $validated['email'])->get()->first();
             $user->update(['password' => $validated['password']]);
-            return new JsonResponse([
-                'status' => 200
-            ]);
+            return new JsonResponse(null, 200);
         } else {
-            return new JsonResponse([
-                'status' => 404
-            ]);
+            return new JsonResponse(null, 404);
         }
     }
     /**
@@ -131,5 +117,7 @@ class AuthController extends Controller
         $passReset = PasswordResetToken::where('email', $email)->get()->first();
 
         $passReset->delete();
+
+        return new JsonResponse(null, 200);
     }
 }

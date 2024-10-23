@@ -45,7 +45,7 @@ export const ticketStore = {
         /** Get all tickets with the relevant category_id from the store.*/
         getTicketsByCategory: (id: number) => computed<Ticket[]>(() => Object.values(baseTicketStore.state.value).filter((ticket) => ticket.category_id == id)),
         /** Get all tickets of the userID from the store.*/
-        getUserTickets: (id: number) => computed(() => Object.values(baseTicketStore.state.value).filter((ticket) => ticket.user!.id == id)),
+        getUserTickets: (id: number) => computed(() => Object.values(baseTicketStore.state.value).filter((ticket) => ticket.user_id == id)),
         /** Get all tickets with the relevant category_id of the user_id from the store.*/
         getUserTicketsByCategory: (category: number, user: number) => computed<Ticket[]>(() =>{
             return Object.values(baseTicketStore.state.value).filter((ticket) => ticket.category_id == category && ticket.user_id == user)
