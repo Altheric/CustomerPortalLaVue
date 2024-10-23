@@ -1,25 +1,34 @@
 <script setup lang="ts">
 //Imports
-import { userStore, USER_VALID_ROLES, USER_DOMAIN_NAME } from '..';
-import { computed, ref } from 'vue';
+import { userStore, USER_DOMAIN_NAME } from '..';
+import { computed } from 'vue';
 import type { User } from '../types';
 import { goToEditPage } from 'services/router';
-//Store Setup
-userStore.setters.setAll
+import { ticketStore } from 'domains/tickets';
+import { infoToast } from 'services/toast';
+import { confirmModal } from 'services/modal';
 
+//Store Setup
+userStore.actions.getAll();
+ticketStore.actions.getAll();
 
 //Refs
-const role = ref('')
+const users = computed(() => userStore.getters.all.value);
 
-const users = computed(() => USER_VALID_ROLES.includes(role.value) ? userStore.getters.getUsersByRole(role.value).value : userStore.getters.all.value);
+//Functions
+const destroy = async (user: User) =>{
+    if(ticketStore.getters.getUserTickets(user.id).value.filter((ticket) => ticket.status == 'unhandled' || ticket.status == 'in progress').length > 0){
+        infoToast('Deze gebruiker heeft nog tickets in behandeling')
+    } else {
+        const confirmation = await confirmModal('Wil je echt ' + user.name + ' verwijderen?', 'Ja', 'Nee')
+        if(confirmation){
+            await userStore.actions.delete(user.id);
+        }
+    }
+}
 </script>
 
 <template>
-    <select v-model="role">
-        <option disabled value="">Kies een rol</option>
-        <option value="all">all</option>
-        <option v-for="role in USER_VALID_ROLES" :value="role">{{ role }}</option>
-    </select>
     <table>
         <thead>
             <tr>
@@ -29,15 +38,14 @@ const users = computed(() => USER_VALID_ROLES.includes(role.value) ? userStore.g
                 <th colspan="2">Acties</th>
             </tr>
         </thead>
-        <tbody >
+        <tbody>
             <tr v-for="user in users">
                 <td style="text-align: left;">{{ user.name }}</td>
                 <td style="text-align: left;">{{ user.email }}</td>
-                <td>{{ user.role }}</td>
-                <template v-if="user.role == 'user'">
-                    <td><button @click="goToEditPage(USER_DOMAIN_NAME, user.id)">Bewerken</button></td>
-                    <td><button @click="">Verwijderen</button></td>
-                </template>
+                <td v-if="user.is_admin">Admin</td>
+                <td v-else>User</td>
+                <td><button @click="goToEditPage(USER_DOMAIN_NAME, user.id)">Bewerken</button></td>
+                <td><button @click="destroy(user)">Verwijderen</button></td>
             </tr>
         </tbody>
     </table>

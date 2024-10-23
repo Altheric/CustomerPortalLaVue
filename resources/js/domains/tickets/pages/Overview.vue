@@ -39,7 +39,7 @@ const userID = computed<number | undefined>(() => {
 
 const tickets = (category: number) => computed<Ticket[]>(() => {
     if (userID.value == user.value?.id) {
-        if(user.value!.is_admin == true){
+        if(user.value?.is_admin == true){
             return category == 0 ? ticketGetters.getAssignedTickets(userID.value!).value : ticketGetters.getAssignedTicketsByCategory(category, userID.value!).value;
         } else {
             return category == 0 ? ticketGetters.getUserTickets(userID.value!).value : ticketGetters.getUserTicketsByCategory(category, userID.value!).value;
@@ -70,6 +70,5 @@ async function assignmentFormHandler(ticketStatus: {admin_id: number | null | un
         <SelectedView :ticket="ticket(selection).value" @revert="selection = 0"/>
         <MessageOverview :user="user!" :admins="admins" :ticketID="selection"/>
         <AssignmentForm v-if="user!.is_admin" :admins="admins" :ticket="ticket(selection).value" @submit="(ticketStatus) => assignmentFormHandler(ticketStatus)"/>
-
     </div>
 </template>

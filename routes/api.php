@@ -21,6 +21,7 @@ Route::controller(AuthController::class)->group(function () {
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {
+    Route::put('tickets/{ticket}/assign', [TicketController::class, 'updateAssigned']);
     Route::get('messages/ticket/{id}', [MessageController::class, 'showForTicket']);
     Route::get('users/admins', [UserController::class, 'showAdmins']);
     Route::apiResources([

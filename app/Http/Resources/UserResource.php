@@ -21,6 +21,7 @@ class UserResource extends JsonResource
             'name' => $this->name,
             'email' => $this->when($request->user('sanctum')->is_admin, $this->email),
             'email_verified_at' => $this->when($request->user('sanctum')->is_admin, $this->email_verified_at),
+            'is_admin' => $this->is_admin,
         ];
     }
 }
