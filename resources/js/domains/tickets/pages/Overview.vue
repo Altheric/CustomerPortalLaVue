@@ -18,7 +18,6 @@ import type { Ticket } from '../types';
 //Store Setup
 ticketStore.actions.getAll();
 categoryStore.actions.getAll();
-userStore.actions.getAdmins();
 
 //Vars
 const ticketGetters = ticketStore.getters;
