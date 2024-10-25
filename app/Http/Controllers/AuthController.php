@@ -15,6 +15,7 @@ use App\Mail\ConfirmRegisterMail;
 Use App\Mail\ResetPasswordMail;
 use App\Http\Requests\ValidatePasswordRequest;
 use App\Http\Requests\PasswordUpdateRequest;
+use App\Http\Resources\SessionResource;
 use Exception;
 use App\Models\PasswordResetToken;
 
@@ -43,10 +44,10 @@ class AuthController extends Controller
             Auth::login($user);
 
             $request->session()->regenerate();
-            return new JsonResponse(null, 200);
+            return new JsonResponse(['user' => new SessionResource($user), 'status' => 200]);
 
         } else {
-            return new JsonResponse(null, 406); 
+            return new JsonResponse(['status' => 406]); 
         }
     }
     /**
@@ -59,25 +60,16 @@ class AuthController extends Controller
  
         $request->session()->regenerateToken();
 
-        return new JsonResponse([
-            'status' => 200
-        ]);
+        return new JsonResponse(200);
     }
     /**
      * Register the user. 
      */
     public function register(RegisterRequest $request){
         $validated = $request->validated();
-        try{
-            $user = User::create($validated);
-            Mail::to($user->email)->send(new ConfirmRegisterMail($user));
-
-            return new JsonResponse(null, 200);
-        } catch(Exception $error) {
-            return new JsonResponse([
-                'status' => $error->getMessage()
-            ]);
-        }
+        $user = User::create($validated);
+        Mail::to($user->email)->send(new ConfirmRegisterMail($user));
+        return new JsonResponse(200);
     }
     /**
      * Send an email to reset the email-holder's password.
@@ -94,7 +86,7 @@ class AuthController extends Controller
 
         Mail::to($user['email'])->send(new ResetPasswordMail($resetURL));
 
-        return new JsonResponse(null, 200);
+        return new JsonResponse(200);
     }
     /**
      * Update the password if the token and email exists in PasswordResetToken.
@@ -105,9 +97,9 @@ class AuthController extends Controller
         if($passReset->token == $validated['token']){
             $user = User::where('email', $validated['email'])->get()->first();
             $user->update(['password' => $validated['password']]);
-            return new JsonResponse(null, 200);
+            return new JsonResponse(200);
         } else {
-            return new JsonResponse(null, 404);
+            return new JsonResponse(404);
         }
     }
     /**
@@ -118,6 +110,6 @@ class AuthController extends Controller
 
         $passReset->delete();
 
-        return new JsonResponse(null, 200);
+        return new JsonResponse(200);
     }
 }

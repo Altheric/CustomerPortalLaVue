@@ -14,23 +14,17 @@ const props = defineProps<{
 }>()
 
 //Refs
-const resetPassword = ref<string>('');
-
-//Functions
-function submit(){
-    const resetCreds: ResetCreds = {
-        email: props.email,
-        token: props.token,
-        password: resetPassword.value
-    }
-    emit('submit', resetCreds);
-}
+const resetCreds = ref({
+    email: props.email,
+    token: props.token,
+    password: ''
+})
 </script>
 
 <template>
-    <form @submit.prevent="submit">
+    <form @submit.prevent="$emit('submit', resetCreds)">
         <label for="form-password">Nieuw Wachtwoord:</label>
-        <input type="password" id="form-password" v-model="resetPassword" required min="8" max="60"><br>
+        <input type="password" id="form-password" v-model="resetCreds.password" required min="8" max="60"><br>
         <input type="submit" value="Reset Wachtwoord">
     </form>
 </template>

@@ -18,15 +18,16 @@ import type { Ticket } from '../types';
 //Store Setup
 ticketStore.actions.getAll();
 categoryStore.actions.getAll();
+userStore.actions.getAdmins();
 
 //Vars
 const ticketGetters = ticketStore.getters;
 
 //Refs
-const user = computed(() => getLoggedInUser.value)
+const user = ref(getLoggedInUser)
 const filter = ref<number>(0);
 const selection = ref<number>(0);
-const admins = computed(() => userStore.getters.getAdmins.value)
+const admins = ref(userStore.getters.getAdmins.value)
 
 const userID = computed<number | undefined>(() => {
     try{
@@ -37,7 +38,7 @@ const userID = computed<number | undefined>(() => {
 })
 
 const tickets = (category: number) => computed<Ticket[]>(() => {
-    if (userID.value == user.value?.id) {
+    if (userID.value == user.value!.id) {
         if(user.value?.is_admin == true){
             return category == 0 ? ticketGetters.getAssignedTickets(userID.value!).value : ticketGetters.getAssignedTicketsByCategory(category, userID.value!).value;
         } else {
@@ -61,13 +62,15 @@ async function assignmentFormHandler(ticketStatus: {admin_id: number | null | un
 </script>
 
 <template>
+    <div v-if="user">
     <div v-if="!selection">
         <CategoryFilter @filter="(catFilter) => filter = catFilter"/>
         <TicketView :tickets="tickets(filter).value" @select="(ticketID) => selection = ticketID"/>
     </div>
     <div v-else>
         <SelectedView :ticket="ticket(selection).value" @revert="selection = 0"/>
-        <MessageOverview :user="user!" :admins="admins" :ticketID="selection"/>
+        <MessageOverview :user="user" :admins="admins" :ticketID="selection"/>
         <AssignmentForm v-if="user!.is_admin" :admins="admins" :ticket="ticket(selection).value" @submit="(ticketStatus) => assignmentFormHandler(ticketStatus)"/>
+    </div>
     </div>
 </template>

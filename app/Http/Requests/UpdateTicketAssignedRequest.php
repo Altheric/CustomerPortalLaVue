@@ -11,8 +11,7 @@ class UpdateTicketAssignedRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        //Admin Only
-        return true;
+        return $this->user()->can('ticket-assign', $this->ticket);
     }
 
     /**

@@ -4,14 +4,14 @@ import { ref } from 'vue';
 import MessageForm from './MessageForm.vue';
 import MessageView from './MessageView.vue';
 import { messageStore } from '..';
-import type { User } from 'domains/user/types';
+import type { SessionCreds } from 'domains/auth/types';
 import type { Message } from '../types';
 
 
 
 //Props
 const props = defineProps<{
-    user: User
+    user: SessionCreds
     ticketID: number
 }>()
 

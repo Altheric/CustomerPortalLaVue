@@ -45,7 +45,7 @@ class UserController extends Controller
     {
         $user->delete();
 
-        return new JsonResource(null, 200);
+        return new JsonResource(200);
     }
     
 }

@@ -32,18 +32,15 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('auth-store', [AuthPolicy::class, 'store']);
 
         Gate::define('user-update', [UserPolicy::class, 'update']);
-        Gate::define('user-remove', [UserPolicy::class, 'remove']);
 
         Gate::define('category-store', [CategoryPolicy::class, 'store']);
         Gate::define('category-update', [CategoryPolicy::class, 'update']);
-        Gate::define('category-remove', [CategoryPolicy::class, 'remove']);
 
         Gate::define('ticket-store', [TicketPolicy::class, 'store']);
         Gate::define('ticket-update', [TicketPolicy::class, 'update']);
-        Gate::define('ticket-remove', [TicketPolicy::class, 'remove']);
+        Gate::define('ticket-assign', [TicketPolicy::class, 'assign']);
 
         Gate::define('message-store', [MessagePolicy::class, 'store']);
         Gate::define('message-update', [MessagePolicy::class, 'update']);
-        Gate::define('message-remove', [MessagePolicy::class, 'remove']);
     }
 }

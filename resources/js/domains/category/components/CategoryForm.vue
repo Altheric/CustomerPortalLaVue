@@ -15,23 +15,18 @@ const emit = defineEmits([
 ]);
 
 //Refs
-const categoryName = ref<string>(props.category.category);
+const category = ref({
+    id: props.category.id,
+    category: props.category.category
+});
 const actionType = ref<string>(props.actionType);
 
-//Functions
-function submit(){
-    const newCategory: Category = {
-        id: props.category.id,
-        category: categoryName.value,
-    }
-    emit('submit', newCategory)
-}
 </script>
 
 <template>
-    <form @submit.prevent="submit">
+    <form @submit.prevent="$emit('submit', category)">
         <label for="form-name"></label>
-        <input id="form-name" type="text" v-model="categoryName">
+        <input id="form-name" type="text" v-model="category.category">
         <input type="submit" v-model="actionType">
     </form>
 </template>

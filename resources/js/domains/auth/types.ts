@@ -8,5 +8,10 @@ export interface ResetCreds extends Credentials {
 }
 
 export interface NewCreds extends Credentials{
-    name: string
+    name: string;
+}
+
+export interface SessionCreds {
+    id: number;
+    is_admin: boolean;
 }

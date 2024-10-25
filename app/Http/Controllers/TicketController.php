@@ -65,6 +65,6 @@ class TicketController extends Controller
     {
         $ticket->delete();
 
-        return new JsonResponse(null, 200);
+        return new JsonResponse(200);
     }
 }

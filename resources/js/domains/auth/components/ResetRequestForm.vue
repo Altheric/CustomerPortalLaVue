@@ -8,21 +8,15 @@ const emit = defineEmits([
 ]);
 
 //Refs
-const resetMail = ref<string>('');
-
-//Functions
-function submit(){
-    const resetRequest: {email: string} = {
-        email: resetMail.value
-    }
-    emit('submit', resetRequest);
-}
+const resetRequest=ref({
+    email: ''
+});
 </script>
 
 <template>
-    <form @submit.prevent="submit">
+    <form @submit.prevent="$emit('submit', resetRequest)">
         <label for="form-email">Email:</label>
-        <input type="email" id="form-email" v-model="resetMail" required min="3" max="60"><br>
+        <input type="email" id="form-email" v-model="resetRequest.email" required min="3" max="60"><br>
 
         <input type="submit" value="Wachtwoord Resetten">
     </form>

@@ -1,6 +1,5 @@
 import type {Credentials, NewCreds, ResetCreds} from './types';
 import { TICKET_DOMAIN_NAME } from 'domains/tickets';
-import {User} from 'domains/user/types';
 import {computed, ref} from 'vue';
 import {getRequest, postRequest, csrfRequest, putRequest, deleteRequest} from 'services/http';
 import {goToOverviewPage, goToRoute, registerBeforeRouteMiddleware} from 'services/router';
@@ -36,7 +35,7 @@ export const authRoutes = [
     },
 ];
 
-const loggedInUser = ref<User | null>(null);
+const loggedInUser = ref<{id: number, is_admin: boolean} | null>(null);
 
 export const isLoggedIn = computed(() => loggedInUser.value !== null);
 export const getLoggedInUser = computed(() => loggedInUser.value);

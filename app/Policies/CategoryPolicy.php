@@ -14,5 +14,4 @@ class CategoryPolicy
     public function update(User $user){
         return $user->is_admin;
     }
-    
 }

@@ -11,8 +11,7 @@ class UpdateCategoryRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        //Admin only!
-        return true;
+        return $this->user()->can('category-update', $this->category);
     }
 
     /**

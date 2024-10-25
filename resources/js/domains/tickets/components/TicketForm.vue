@@ -17,36 +17,24 @@ const emit = defineEmits([
 
 //Refs
 const categories = computed(() => categoryStore.getters.all.value);
-
-const actionType = ref<string>(props.actionType);
-const ticketID = ref<number>(props.ticket.id);
-const title = ref<string>(props.ticket.title);
-const content = ref<string>(props.ticket.content);
-const categoryID = ref<number>(props.ticket.category_id);
-const userID = ref<number>(props.ticket.user_id);
-const status = ref<string | null>(props.ticket.status);
-
-//Functions
-function submit(){
-    const newTicket: Ticket = {
-        id: ticketID.value,
-        title: title.value,
-        content: content.value,
-        category_id: categoryID.value,
-        user_id: userID.value,
-        status: status.value
-    }
-    emit('submit', newTicket);
-}
+const actionType = ref(props.actionType);
+const ticket = ref({
+    id: props.ticket.id,
+    title: props.ticket.title,
+    content: props.ticket.content,
+    category_id: props.ticket.category_id,
+    user_id: props.ticket.user_id,
+    status: props.ticket.status
+});
 </script>
 
 <template>
-    <form @submit.prevent="submit">
+    <form @submit.prevent="$emit('submit', ticket)">
         <label for="form-title">Titel:</label>
-        <input type="text" id="form-title" v-model="title" required min="3" max="60"><br>
+        <input type="text" id="form-title" v-model="ticket.title" required min="3" max="60"><br>
         <label for="form-content">Uw Probleem:</label>
-        <input type="text" id="form-content" v-model="content" required min="8" max="60"><br>
-        <select v-model.number="categoryID" required>
+        <input type="text" id="form-content" v-model="ticket.content" required min="8" max="60"><br>
+        <select v-model.number="ticket.category_id" required>
             <option disabled value="">Kies een categorie</option>
             <option v-for="category in categories" :value="category.id" :key="category.id">{{ category.category }}</option>
         </select>

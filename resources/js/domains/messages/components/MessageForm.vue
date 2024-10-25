@@ -2,13 +2,13 @@
 //Imports
 import { computed, ref } from 'vue';
 import type { Message } from '../types';
-import type { User } from 'domains/user/types';
+import type { SessionCreds } from 'domains/auth/types';
 
 //Props
 const props = defineProps<{
     actionType: string
     ticketID?: number
-    user: User
+    user: SessionCreds
     message?: Message
 }>()
 
@@ -18,29 +18,23 @@ const emit = defineEmits([
 ]);
 
 //Refs
-const id = computed<number> (() => props.message ? props.message.id : 0 );
-const content = props.message ? ref<string>(props.message.content) : ref<string>('');
 const submitType = computed<string>(() => props.actionType == 'response' ? 
     props.message? 'Update reactie' : 'Plaats reactie' : props.message? 'Update notitie' : 'Plaats notitie'
 );
-const ticketID = computed<number>(() => props.ticketID ? props.ticketID : props.message? props.message.ticket_id : 0);
 
-//Functions
-const newMessage: Message = {
-    id: id.value,
-    content: content.value,
+const message = ref({
+    id: props.message ? props.message.id : 0,
+    content: props.message? props.message.content : '',
     type: props.actionType,
-    ticket_id: ticketID.value,
+    ticket_id: props.ticketID ? props.ticketID : props.message? props.message.ticket_id : 0,
     user_id: props.user.id
-} 
-function submit(){
-    emit('submit', newMessage);
-}
+});
+
 </script>
 
 <template>
-    <form @submit.prevent="submit" :id="'admin-'+actionType+'-form'">
-        <input type="text" id="form-text" v-model="content" required min="8"><br>
+    <form @submit.prevent="$emit('submit', message)" :id="'admin-'+actionType+'-form'">
+        <input type="text" id="form-text" v-model="message.content" required min="8"><br>
         <input type="submit" v-model="submitType">
     </form>
 </template>

@@ -1,16 +1,18 @@
 <script setup lang="ts">
 //Imports
-import { computed } from 'vue';
 import { RouterLink } from 'vue-router';
-import { logout, getLoggedInUser } from 'domains/auth';
+import { logout } from 'domains/auth';
+import type { SessionCreds } from 'domains/auth/types';
 
-
-const user = computed(() => getLoggedInUser.value!);
+//Props
+const props = defineProps<{
+    user : SessionCreds
+}>()
 
 </script>
 
 <template>
-    <nav>
+    <nav v-if="user">
         <RouterLink to="/tickets" style="padding-right:20px;">Overzicht</RouterLink>
         <div v-if="user.is_admin" style="display: inline-block">
             <RouterLink :to="'/ticket/' + user!.id"  style="padding-right:20px;">Toegestuurde Tickets</RouterLink>

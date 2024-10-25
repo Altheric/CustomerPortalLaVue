@@ -11,8 +11,7 @@ class StoreMessageRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        //Admin Only
-        return true;
+        return $this->user()->can('message-store', $this->message);
     }
 
     /**
