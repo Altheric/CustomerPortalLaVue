@@ -1,11 +1,12 @@
 //Imports
-import { setTranslation } from 'services/translation';
+import { getPluralTranslation, setTranslation } from 'services/translation';
 import { storeModuleFactory } from 'services/store';
 import { computed } from 'vue';
 import { putRequest } from 'services/http';
 import { createOverviewRoute, createCreateRoute, createShowRoute, createEditRoute } from 'services/router/factory';
 //Page Imports
 import OverviewPage from './pages/Overview.vue';
+import ShowPage from './pages/Show.vue';
 import CreatePage from './pages/Create.vue';
 import EditPage from './pages/Edit.vue';
 //Type Imports
@@ -22,7 +23,13 @@ setTranslation(TICKET_DOMAIN_NAME, {
 
 export const ticketRoutes = [
     createOverviewRoute(TICKET_DOMAIN_NAME, OverviewPage),
-    createShowRoute(TICKET_DOMAIN_NAME, OverviewPage),
+    {
+        path: `/${getPluralTranslation(TICKET_DOMAIN_NAME)}/mijn-tickets/:id`,
+        name: 'mytickets',
+        component: OverviewPage,
+        meta: {auth: true, canSeeWhenLoggedIn: true},
+    },
+    createShowRoute(TICKET_DOMAIN_NAME, ShowPage),
     createCreateRoute(TICKET_DOMAIN_NAME, CreatePage),
     createEditRoute(TICKET_DOMAIN_NAME, EditPage)
 ]
