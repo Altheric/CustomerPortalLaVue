@@ -4,6 +4,7 @@ import { TICKET_DOMAIN_NAME } from '..';
 import { getSingularTranslation } from 'services/translation';
 import { RouterLink } from 'vue-router';
 import type { Ticket } from '../types';
+import { goToShowPage } from 'services/router';
 
 
 //Props
@@ -21,7 +22,20 @@ const emit = defineEmits([
 
 <template>
     <p v-if="tickets.length < 1">Er zijn geen tickets.</p>
-    <div v-for="ticket in tickets" :key="ticket.id">
-        <RouterLink :to="`${getSingularTranslation(TICKET_DOMAIN_NAME)}/${ticket.id}`" class="overview-link">{{ ticket.title }}. Status: {{ ticket.status}}</RouterLink>
-    </div>
+    <table v-else>
+        <thead>
+            <tr>
+                <th>Ticket</th>
+                <th>Status</th>
+                <th><!--Actions--></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="ticket in tickets" :key="ticket.id">
+                <td>{{ ticket.title }}</td>
+                <td>{{ ticket.status}}</td>
+                <td><button @click="goToShowPage(TICKET_DOMAIN_NAME, ticket.id)">Bekijk</button></td>
+            </tr>             
+        </tbody>
+    </table>
 </template>

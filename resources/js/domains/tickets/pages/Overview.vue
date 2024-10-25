@@ -50,6 +50,8 @@ const tickets = (category: number) => computed<Ticket[]>(() => {
 <template>
     <div v-if="user">
         <CategoryFilter @filter="(catFilter) => filter = catFilter"/>
-        <TicketView :tickets="tickets(filter).value" @select="(ticketID) => selection = ticketID"/>
+        <div id="view">
+            <TicketView :tickets="tickets(filter).value" @select="(ticketID) => selection = ticketID"/>
+        </div>
     </div>
 </template>

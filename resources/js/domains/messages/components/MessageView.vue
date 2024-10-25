@@ -22,15 +22,17 @@ const header = computed<string>(() => props.messageType == 'response' ? 'Reactie
 </script>
 
 <template>
-    <div :id="'admin-'+messageType" v-if="messages.length > 0">
-        <h2>{{ header }}</h2>
-        <template v-for="message in messages">
-            <div v-if="userID == message.user_id">
-                <button @click="$emit('edit', message)">Edit</button>
-                <button @click="$emit('destroy', message)">Delete</button>
-            </div>
-            <p>{{ selectedAdmin(message.user_id).value.name }}</p>
-            <p>{{ message.content }}</p>
-        </template>
+    <div id="view">
+        <div :id="'admin-'+messageType" v-if="messages.length > 0">
+            <h2>{{ header }}</h2>
+            <template v-for="message in messages">
+                <div v-if="userID == message.user_id">
+                    <button @click="$emit('edit', message)">Edit</button>
+                    <button @click="$emit('destroy', message)">Delete</button>
+                </div>
+                <p>{{ selectedAdmin(message.user_id).value.name }}</p>
+                <p>{{ message.content }}</p>
+            </template>
+        </div>
     </div>
 </template>

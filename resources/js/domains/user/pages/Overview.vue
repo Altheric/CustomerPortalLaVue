@@ -29,24 +29,26 @@ const destroy = async (user: User) =>{
 </script>
 
 <template>
-    <table>
-        <thead>
-            <tr>
-                <th>Naam</th>
-                <th>Email</th>
-                <th>Rol</th>
-                <th colspan="2">Acties</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="user in users">
-                <td style="text-align: left;">{{ user.name }}</td>
-                <td style="text-align: left;">{{ user.email }}</td>
-                <td v-if="user.is_admin">Admin</td>
-                <td v-else>User</td>
-                <td><button @click="goToEditPage(USER_DOMAIN_NAME, user.id)">Bewerken</button></td>
-                <td><button @click="destroy(user)">Verwijderen</button></td>
-            </tr>
-        </tbody>
-    </table>
+    <div id="view">
+        <table>
+            <thead>
+                <tr>
+                    <th>Naam</th>
+                    <th>Email</th>
+                    <th>Rol</th>
+                    <th colspan="2">Acties</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="user in users">
+                    <td style="text-align: left;">{{ user.name }}</td>
+                    <td style="text-align: left;">{{ user.email }}</td>
+                    <td v-if="user.is_admin">Admin</td>
+                    <td v-else>User</td>
+                    <td><button @click="goToEditPage(USER_DOMAIN_NAME, user.id)">Bewerken</button></td>
+                    <td><button @click="destroy(user)">Verwijderen</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </template>

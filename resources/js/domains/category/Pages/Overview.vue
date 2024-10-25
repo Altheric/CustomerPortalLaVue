@@ -14,7 +14,7 @@ const categories = computed(() => categoryStore.getters.all.value);
 
 <template>
     <button @click="goToCreatePage(CATEGORY_DOMAIN_NAME)">Nieuwe Categorie</button>
-    <ul class="category-list" style="list-style-type:none;text-align: right;">
+    <ul class="category-list">
         <li v-for="category in categories" :key="category.id">
             {{ category.category }}
             <button @click="goToEditPage(CATEGORY_DOMAIN_NAME, category.id)">Bewerken</button>
